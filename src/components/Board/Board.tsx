@@ -13,7 +13,7 @@ const Board = () => {
 
     const [ cursor, setCursor ] = useState<'' | 'hit'>( '' );
 
-    const hammerAnimate = () => {
+    const hammerHit = () => {
         setCursor( 'hit' );
         setTimeout( () => setCursor( '' ), 50 );
     };
@@ -42,7 +42,7 @@ const Board = () => {
                         style={ {
                             margin: '.25rem'
                         } }
-                        onClick={ () => hammerAnimate() }
+                        onClick={ () => hammerHit() }
                     />
                 ) )
             }
