@@ -1,7 +1,5 @@
 import { Card } from '@mui/material';
 import { backgroundGreen } from '../../theme/theme';
-import mole from '../../assets/mole-pop.png';
-import hole from '../../assets/mole-hole.png';
 import hammer from '../../assets/hammer.png';
 import hit from '../../assets/hammer-hit.png';
 import {
@@ -12,6 +10,7 @@ import {
 } from 'react';
 import { GameLevel } from '../../types/types';
 import { GAME_LEVELS } from '../../utils/gameLevels';
+import Mole from '../Mole/Mole';
 
 type Props = {
     setScore: Dispatch<SetStateAction<number>>;
@@ -73,15 +72,11 @@ const Board = ( { setScore }: Props ) => {
         >
             {
                 moles.map( ( isPopped, i ) => (
-                    <img
-                        src={ isPopped ? mole : hole }
+                    <Mole
                         key={ i }
-                        height={ 92 }
-                        width={ 92 }
-                        style={ {
-                            margin: '.25rem'
-                        } }
-                        onClick={ () => hammerHit( i, isPopped ) }
+                        moleIndex={ i }
+                        isPopped={ isPopped }
+                        hammerHit={ hammerHit }
                     />
                 ) )
             }
