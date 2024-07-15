@@ -1,7 +1,12 @@
 import { GameLevel } from '../types/types';
 
 export const GAME_LEVELS: Record<GameLevel['level'], GameLevel> = {
-    easy: {
+    child: {
+        level: 'child'
+        , moleUpTime: 4000
+        , moleUpFrequency: 2500
+    }
+    , easy: {
         level: 'easy'
         , moleUpTime: 2500
         , moleUpFrequency: 1500

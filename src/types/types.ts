@@ -4,7 +4,7 @@ export type Mole = {
 };
 
 export type GameLevel = {
-    level: 'easy' | 'medium' | 'hard';
+    level: 'child' | 'easy' | 'medium' | 'hard';
     /**
      * How long is a single mole popped up
      */

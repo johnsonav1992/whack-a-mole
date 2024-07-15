@@ -19,7 +19,7 @@ type Props = {
 
 const Board = ( { setScore }: Props ) => {
     const [ moles, setMoles ] = useState<boolean[]>( Array( 16 ).fill( false ) );
-    const [ gameLevel, setGameLevel ] = useState<GameLevel>( GAME_LEVELS.easy );
+    const [ gameLevel, setGameLevel ] = useState<GameLevel>( GAME_LEVELS.child );
 
     const [ cursor, setCursor ] = useState<'' | 'hit'>( '' );
 
