@@ -1,22 +1,61 @@
 import { Card } from '@mui/material';
 import { backgroundGreen } from '../../theme/theme';
-import { Mole } from '../../types/types';
+import mole from '../../assets/mole-pop.png';
+import hole from '../../assets/mole-hole.png';
 import hammer from '../../assets/hammer.png';
 import hit from '../../assets/hammer-hit.png';
-import { useState } from 'react';
+import {
+    Dispatch
+    , SetStateAction
+    , useEffect
+    , useState
+} from 'react';
+import { GameLevel } from '../../types/types';
+import { GAME_LEVELS } from '../../utils/gameLevels';
 
-const Board = () => {
-    const moles = Array.from<{ length: number }, Mole>( { length: 16 }, ( _, i ) => ( {
-        image: 'src/assets/mole-pop.png'
-        , isPopped: i === 5 ?? false
-    } ) );
+type Props = {
+    setScore: Dispatch<SetStateAction<number>>;
+};
+
+const Board = ( { setScore }: Props ) => {
+    const [ moles, setMoles ] = useState<boolean[]>( Array( 16 ).fill( false ) );
+    const [ gameLevel, setGameLevel ] = useState<GameLevel>( GAME_LEVELS.easy );
 
     const [ cursor, setCursor ] = useState<'' | 'hit'>( '' );
 
-    const hammerHit = () => {
+    const hammerHit = ( idx: number, isPopped: boolean ) => {
         setCursor( 'hit' );
         setTimeout( () => setCursor( '' ), 50 );
+
+        if ( !isPopped ) return;
+
+        toggleMole( idx, false );
+        setScore( currScore => currScore + 1 );
     };
+
+    const toggleMole = ( idx: number, isVisible: boolean ) => {
+        setMoles( currentMoles => {
+            const newMoles = [ ...currentMoles ];
+            newMoles[ idx ] = isVisible;
+
+            return newMoles;
+        } );
+    };
+
+    useEffect( () => {
+        const interval = setInterval( () => {
+            const moleToPop = Math.floor( Math.random() * moles.length );
+            toggleMole( moleToPop, true );
+
+            setTimeout( () => {
+                toggleMole( moleToPop, false );
+            }, gameLevel.moleUpTime );
+        }, gameLevel.moleUpFrequency );
+
+        return () => {
+            clearInterval( interval );
+        };
+    }, [] );
 
     return (
         <Card
@@ -33,16 +72,16 @@ const Board = () => {
             } }
         >
             {
-                moles.map( ( mole, i ) => (
+                moles.map( ( isPopped, i ) => (
                     <img
-                        src={ mole.isPopped ? mole.image.replace( 'pop', 'hole' ) : mole.image }
+                        src={ isPopped ? mole : hole }
                         key={ i }
                         height={ 92 }
                         width={ 92 }
                         style={ {
                             margin: '.25rem'
                         } }
-                        onClick={ () => hammerHit() }
+                        onClick={ () => hammerHit( i, isPopped ) }
                     />
                 ) )
             }

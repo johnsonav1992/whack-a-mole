@@ -1,7 +1,10 @@
 import { Stack } from '@mui/material';
 import Board from './components/Board/Board';
+import { useState } from 'react';
+import ScoreBoard from './components/ScoreBoard/ScoreBoard';
 
 function App () {
+    const [ score, setScore ] = useState( 0 );
 
     return (
         <Stack
@@ -12,7 +15,8 @@ function App () {
                 , justifyContent: 'center'
             } }
         >
-            <Board />
+            <ScoreBoard score={ score } />
+            <Board setScore={ setScore } />
         </Stack>
     );
 }
