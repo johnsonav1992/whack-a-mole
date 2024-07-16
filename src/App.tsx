@@ -1,15 +1,27 @@
+import { useState } from 'react';
+
+// MUI
 import {
     Stack
     , Typography
 } from '@mui/material';
+
+// Components
 import Board from './components/Board/Board';
-import { useState } from 'react';
 import ScoreBoard from './components/ScoreBoard/ScoreBoard';
-import { GAME_LEVELS } from './utils/gameLevels';
-import { useTimer } from './hooks/useTimer';
-import { GameLevel } from './types/types';
 import GameOver from './components/GameOver/GameOver';
+
+// Utils
+import { GAME_LEVELS } from './utils/gameLevels';
+
+// Hooks
+import { useTimer } from './hooks/useTimer';
 import { useFont } from './hooks/useFont';
+
+// Types
+import { GameLevel } from './types/types';
+
+// Assets
 import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
 function App () {

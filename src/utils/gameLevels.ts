@@ -1,3 +1,4 @@
+// Types
 import { GameLevel } from '../types/types';
 
 export const GAME_LEVELS: Record<GameLevel['level'], GameLevel> = {
