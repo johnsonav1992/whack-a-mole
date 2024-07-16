@@ -22,7 +22,7 @@ const ScoreBoard = ( {
                 , justifyContent: 'space-between'
                 , gap: '1rem'
                 , width: 500
-                , backgroundColor: theme => theme.palette.grey[ 200 ]
+                , backgroundColor: theme => theme.palette.grey[ 300 ]
             } }
         >
             <Typography variant='h5'>

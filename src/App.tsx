@@ -23,12 +23,20 @@ import { GameLevel } from './types/types';
 
 // Assets
 import whackAMoleFont from './assets/HelloWhackAMole.ttf';
+import GameStart from './components/GameStart/GameStart';
+import ViewWrapper from './components/ViewWrapper/ViewWrapper';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
-    const [ gameLevel, setGameLevel ] = useState<GameLevel>( GAME_LEVELS.child );
+    const [ gameLevel, setGameLevel ] = useState<GameLevel | null>( GAME_LEVELS.child );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
+
+    if ( !gameLevel ) {
+        return (
+            <GameStart />
+        );
+    }
 
     const {
         remainingTime
@@ -50,15 +58,7 @@ function App () {
     }
 
     return (
-        <Stack
-            sx={ {
-                width: '100%'
-                , height: '100vh'
-                , alignItems: 'center'
-                , justifyContent: 'center'
-                , gap: '1rem'
-            } }
-        >
+        <ViewWrapper>
             <Typography
                 fontFamily='Whack-A-Mole'
                 variant='h1'
@@ -76,7 +76,7 @@ function App () {
                     gameLevel={ gameLevel }
                 />
             </Stack>
-        </Stack>
+        </ViewWrapper>
     );
 }
 

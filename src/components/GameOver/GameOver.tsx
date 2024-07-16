@@ -1,9 +1,11 @@
 // MUI
 import {
     Button
-    , Stack
     , Typography
 } from '@mui/material';
+
+// Components
+import ViewWrapper from '../ViewWrapper/ViewWrapper';
 
 type Props = {
     score: number;
@@ -15,15 +17,7 @@ const GameOver = ( {
     , resetGame
 }: Props ) => {
     return (
-        <Stack
-            sx={ {
-                width: '100%'
-                , height: '100vh'
-                , alignItems: 'center'
-                , justifyContent: 'center'
-                , gap: '1rem'
-            } }
-        >
+        <ViewWrapper>
             <Typography
                 variant='h1'
                 fontFamily='Whack-A-Mole'
@@ -39,7 +33,7 @@ const GameOver = ( {
             >
                     Play Again!
             </Button>
-        </Stack>
+        </ViewWrapper>
     );
 };
 

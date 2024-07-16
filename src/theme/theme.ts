@@ -3,6 +3,7 @@ import { createTheme } from '@mui/material';
 
 export const backgroundGreen = '#7df438';
 export const backgroundLightBrown = '#D3B683';
+export const textBrown = '#5C4033';
 
 export const theme = createTheme( {
     palette: {
@@ -11,6 +12,9 @@ export const theme = createTheme( {
         }
         , secondary: {
             main: backgroundLightBrown
+        }
+        , text: {
+            primary: textBrown
         }
     }
 } );
