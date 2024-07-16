@@ -6,6 +6,10 @@ export type Mole = {
 export type GameLevel = {
     level: 'child' | 'easy' | 'medium' | 'hard';
     /**
+     * In seconds
+     */
+    gameDuration: number;
+    /**
      * How long is a single mole popped up
      */
     moleUpTime: number;

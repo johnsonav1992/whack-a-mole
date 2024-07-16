@@ -14,9 +14,13 @@ import Mole from '../Mole/Mole';
 
 type Props = {
     setScore: Dispatch<SetStateAction<number>>;
+    remainingTime: number;
 };
 
-const Board = ( { setScore }: Props ) => {
+const Board = ( {
+    setScore
+    , remainingTime
+}: Props ) => {
     const [ moles, setMoles ] = useState<boolean[]>( Array( 16 ).fill( false ) );
     const [ gameLevel, setGameLevel ] = useState<GameLevel>( GAME_LEVELS.child );
 
@@ -42,6 +46,8 @@ const Board = ( { setScore }: Props ) => {
     };
 
     useEffect( () => {
+        if ( !remainingTime ) return;
+
         const interval = setInterval( () => {
             const moleToPop = Math.floor( Math.random() * moles.length );
             toggleMole( moleToPop, true );
@@ -60,12 +66,14 @@ const Board = ( { setScore }: Props ) => {
         <Card
             elevation={ 4 }
             sx={ {
-                width: 400
+                width: 500
                 , display: 'flex'
+                , justifyContent: 'space-between'
+                , gap: '.5rem'
                 , flexWrap: 'wrap'
                 , aspectRatio: 1
                 , backgroundColor: backgroundGreen
-                , padding: '.5rem'
+                , padding: '1.5rem'
                 // , cursor: `url('${ cursor === 'hit' ? hit : hammer }') 64 32, auto`
                 , cursor: `url('${ cursor === 'hit' ? hit : hammer }') 64 32, auto`
             } }

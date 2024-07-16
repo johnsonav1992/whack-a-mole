@@ -15,10 +15,10 @@ const Mole = ( {
     return (
         <img
             src={ isPopped ? mole : hole }
-            height={ 92 }
-            width={ 92 }
+            height={ 100 }
+            width={ 100 }
             style={ {
-                margin: '.25rem'
+                // margin: '.5rem'
             } }
             onClick={ () => hammerHit( moleIndex, isPopped ) }
         />
