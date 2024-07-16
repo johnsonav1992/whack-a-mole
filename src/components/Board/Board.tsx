@@ -9,20 +9,20 @@ import {
     , useState
 } from 'react';
 import { GameLevel } from '../../types/types';
-import { GAME_LEVELS } from '../../utils/gameLevels';
 import Mole from '../Mole/Mole';
 
 type Props = {
     setScore: Dispatch<SetStateAction<number>>;
     remainingTime: number;
+    gameLevel: GameLevel;
 };
 
 const Board = ( {
     setScore
     , remainingTime
+    , gameLevel
 }: Props ) => {
     const [ moles, setMoles ] = useState<boolean[]>( Array( 16 ).fill( false ) );
-    const [ gameLevel, setGameLevel ] = useState<GameLevel>( GAME_LEVELS.child );
 
     const [ cursor, setCursor ] = useState<'' | 'hit'>( '' );
 

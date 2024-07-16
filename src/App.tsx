@@ -1,55 +1,32 @@
-import {
-    Button
-    , Stack
-} from '@mui/material';
+import { Stack } from '@mui/material';
 import Board from './components/Board/Board';
-import {
-    useEffect
-    , useState
-} from 'react';
+import { useState } from 'react';
 import ScoreBoard from './components/ScoreBoard/ScoreBoard';
 import { GAME_LEVELS } from './utils/gameLevels';
+import { useTimer } from './hooks/useTimer';
+import { GameLevel } from './types/types';
+import GameOver from './components/GameOver/GameOver';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
-    const [ remainingTime, setRemainingTime ] = useState( GAME_LEVELS.child.gameDuration );
+    const [ gameLevel, setGameLevel ] = useState<GameLevel>( GAME_LEVELS.child );
+
+    const {
+        remainingTime
+        , setRemainingTime
+    } = useTimer( { gameDuration: gameLevel.gameDuration } );
 
     const resetGame = () => {
-        setRemainingTime( GAME_LEVELS.child.gameDuration );
+        setRemainingTime( gameLevel.gameDuration );
         setScore( 0 );
     };
 
-    useEffect( () => {
-        if ( !remainingTime ) return;
-
-        const interval = setInterval( () => {
-            setRemainingTime( prev => prev - 1 );
-        }, 1000 );
-
-        return () => {
-            clearInterval( interval );
-        };
-    }, [ remainingTime ] );
-
-    if ( remainingTime === 0 ) {
+    if ( !remainingTime ) {
         return (
-            <Stack
-                sx={ {
-                    width: '100%'
-                    , height: '100vh'
-                    , alignItems: 'center'
-                    , justifyContent: 'center'
-                } }
-            >
-                <h1>Game Over!</h1>
-                <h2>Score: { score }</h2>
-                <Button
-                    variant='contained'
-                    onClick={ () => resetGame() }
-                >
-                    Play Again!
-                </Button>
-            </Stack>
+            <GameOver
+                score={ score }
+                resetGame={ resetGame }
+            />
         );
     }
 
@@ -69,6 +46,7 @@ function App () {
             <Board
                 setScore={ setScore }
                 remainingTime={ remainingTime }
+                gameLevel={ gameLevel }
             />
         </Stack>
     );
