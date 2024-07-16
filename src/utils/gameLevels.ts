@@ -8,7 +8,7 @@ export const GAME_LEVELS: Record<GameLevel['level'], GameLevel> = {
         , moleUpTime: 4000
         , moleUpFrequencyBase: 2500
         , moleUpFrequencyUpper: 250
-        , moleUpFrequencyLower: 2000
+        , moleUpFrequencyLower: 1750
     }
     , easy: {
         level: 'easy'

@@ -6,3 +6,11 @@ export const getRandomTimeWithinRange = ( baseMs: number, upper: number, lower: 
 
     return randomMs;
 };
+
+export const getNextMoleToPop = ( moles: boolean[] ) => {
+    const moleToPop = Math.floor( Math.random() * moles.length );
+
+    if ( moles[ moleToPop ] ) getNextMoleToPop( moles );
+
+    return moleToPop;
+};

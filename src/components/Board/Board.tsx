@@ -20,7 +20,10 @@ import hammerHit from '../../assets/hammer-hit.png';
 
 // Types
 import { GameLevel } from '../../types/types';
-import { getRandomTimeWithinRange } from '../../utils/utils';
+import {
+    getNextMoleToPop
+    , getRandomTimeWithinRange
+} from '../../utils/utils';
 
 type Props = {
     setScore: Dispatch<SetStateAction<number>>;
@@ -68,7 +71,7 @@ const Board = ( {
         );
 
         const timeoutId = setTimeout( () => {
-            const moleToPop = Math.floor( Math.random() * moles.length );
+            const moleToPop = getNextMoleToPop( moles );
             toggleMole( moleToPop, true );
 
             setTimeout( () => {
