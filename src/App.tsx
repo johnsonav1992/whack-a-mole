@@ -10,6 +10,8 @@ import {
 import Board from './components/Board/Board';
 import ScoreBoard from './components/ScoreBoard/ScoreBoard';
 import GameOver from './components/GameOver/GameOver';
+import ViewWrapper from './components/ViewWrapper/ViewWrapper';
+import GameStart from './components/GameStart/GameStart';
 
 // Utils
 import { GAME_LEVELS } from './utils/gameLevels';
@@ -23,8 +25,6 @@ import { GameLevel } from './types/types';
 
 // Assets
 import whackAMoleFont from './assets/HelloWhackAMole.ttf';
-import GameStart from './components/GameStart/GameStart';
-import ViewWrapper from './components/ViewWrapper/ViewWrapper';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
