@@ -1,5 +1,7 @@
-import { Stack } from '@mui/material';
 import { PropsWithChildren } from 'react';
+
+// MUI
+import { Stack } from '@mui/material';
 
 const ViewWrapper = ( { children }: PropsWithChildren<unknown> ) => {
     return (
