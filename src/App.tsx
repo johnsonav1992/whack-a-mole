@@ -38,7 +38,7 @@ function App () {
     } = useTimer( { gameDuration: null } );
 
     const resetGame = () => {
-        setRemainingTime( 10 );
+        setRemainingTime( gameLevel.gameDuration );
         setScore( 0 );
     };
 

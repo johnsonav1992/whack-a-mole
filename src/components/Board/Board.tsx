@@ -14,15 +14,13 @@ import { Card } from '@mui/material';
 import Mole from '../Mole/Mole';
 import WhackSound from '../WhackSound/WhackSound';
 
-// Theme
-import { backgroundGreen } from '../../theme/theme';
-
 // Assets
-import hammer from '../../assets/hammer.png';
-import hit from '../../assets/hammer-hit.png';
+import hammerUp from '../../assets/hammer.png';
+import hammerHit from '../../assets/hammer-hit.png';
 
 // Types
 import { GameLevel } from '../../types/types';
+import { getRandomTimeWithinRange } from '../../utils/utils';
 
 type Props = {
     setScore: Dispatch<SetStateAction<number>>;
@@ -36,13 +34,13 @@ const Board = ( {
     , gameLevel
 }: Props ) => {
     const [ moles, setMoles ] = useState<boolean[]>( Array( 16 ).fill( false ) );
-    const [ cursor, setCursor ] = useState<'' | 'hit'>( '' );
+    const [ cursor, setCursor ] = useState<'up' | 'whack'>( 'up' );
 
     const whackSoundRef = useRef<ElementRef<'audio'>>( null );
 
-    const hammerHit = ( idx: number, isPopped: boolean ) => {
-        setCursor( 'hit' );
-        setTimeout( () => setCursor( '' ), 50 );
+    const whack = ( idx: number, isPopped: boolean ) => {
+        setCursor( 'whack' );
+        setTimeout( () => setCursor( 'up' ), 50 );
 
         if ( !isPopped ) return;
 
@@ -63,19 +61,25 @@ const Board = ( {
     useEffect( () => {
         if ( !remainingTime ) return;
 
-        const interval = setInterval( () => {
+        const moleUpFreq = getRandomTimeWithinRange(
+            gameLevel.moleUpFrequencyBase
+            , gameLevel.moleUpFrequencyUpper
+            , gameLevel.moleUpFrequencyLower
+        );
+
+        const timeoutId = setTimeout( () => {
             const moleToPop = Math.floor( Math.random() * moles.length );
             toggleMole( moleToPop, true );
 
             setTimeout( () => {
                 toggleMole( moleToPop, false );
             }, gameLevel.moleUpTime );
-        }, gameLevel.moleUpFrequency );
+        }, moleUpFreq );
 
         return () => {
-            clearInterval( interval );
+            clearTimeout( timeoutId );
         };
-    }, [] );
+    }, [ moles ] );
 
     return (
         <Card
@@ -87,9 +91,9 @@ const Board = ( {
                 , gap: '.5rem'
                 , flexWrap: 'wrap'
                 , aspectRatio: 1
-                , backgroundColor: backgroundGreen
+                , backgroundColor: theme => theme.palette.primary.main
                 , padding: '1.5rem'
-                , cursor: `url('${ cursor === 'hit' ? hit : hammer }') 64 32, auto`
+                , cursor: `url('${ cursor === 'whack' ? hammerHit : hammerUp }') 64 32, auto`
             } }
         >
             {
@@ -98,7 +102,7 @@ const Board = ( {
                         key={ i }
                         moleIndex={ i }
                         isPopped={ isPopped }
-                        hammerHit={ hammerHit }
+                        hammerHit={ whack }
                     />
                 ) )
             }

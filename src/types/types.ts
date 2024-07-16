@@ -16,5 +16,13 @@ export type GameLevel = {
     /**
      * frequency between new moles popping up
      */
-    moleUpFrequency: number;
+    moleUpFrequencyBase: number;
+    /**
+     * potential additional ms range to add
+     */
+    moleUpFrequencyUpper: number;
+    /**
+     * potential ms range to subtract
+     */
+    moleUpFrequencyLower: number;
 };
