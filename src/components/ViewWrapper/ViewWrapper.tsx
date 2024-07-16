@@ -1,9 +1,16 @@
 import { PropsWithChildren } from 'react';
 
 // MUI
-import { Stack } from '@mui/material';
+import {
+    Stack
+    , StackProps
+} from '@mui/material';
 
-const ViewWrapper = ( { children }: PropsWithChildren<unknown> ) => {
+const ViewWrapper = ( {
+    children
+    , sx
+    , ...stackProps
+}: PropsWithChildren<StackProps> ) => {
     return (
         <Stack
             sx={ {
@@ -13,7 +20,9 @@ const ViewWrapper = ( { children }: PropsWithChildren<unknown> ) => {
                 , justifyContent: 'center'
                 , gap: '1rem'
                 , backgroundColor: theme => theme.palette.secondary.main
+                , ...sx
             } }
+            { ...stackProps }
         >
             { children }
         </Stack>

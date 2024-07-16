@@ -28,30 +28,29 @@ import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
-    const [ gameLevel, setGameLevel ] = useState<GameLevel | null>( GAME_LEVELS.child );
+    const [ gameLevel, setGameLevel ] = useState<GameLevel>( GAME_LEVELS.child );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
-
-    if ( !gameLevel ) {
-        return (
-            <GameStart />
-        );
-    }
 
     const {
         remainingTime
         , setRemainingTime
-    } = useTimer( { gameDuration: gameLevel.gameDuration } );
+    } = useTimer( { gameDuration: null } );
 
     const resetGame = () => {
-        setRemainingTime( gameLevel.gameDuration );
+        setRemainingTime( 10 );
         setScore( 0 );
     };
 
-    if ( !remainingTime ) {
-        return (
+    switch ( remainingTime ) {
+        case 0: return (
             <GameOver
                 score={ score }
+                resetGame={ resetGame }
+            />
+        );
+        case null: return (
+            <GameStart
                 resetGame={ resetGame }
             />
         );

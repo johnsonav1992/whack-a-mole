@@ -30,8 +30,9 @@ const GameOver = ( {
             <Button
                 variant='contained'
                 onClick={ () => resetGame() }
+                size='large'
             >
-                    Play Again!
+                Play Again!
             </Button>
         </ViewWrapper>
     );
