@@ -4,12 +4,15 @@ import hammer from '../../assets/hammer.png';
 import hit from '../../assets/hammer-hit.png';
 import {
     Dispatch
+    , ElementRef
     , SetStateAction
     , useEffect
+    , useRef
     , useState
 } from 'react';
 import { GameLevel } from '../../types/types';
 import Mole from '../Mole/Mole';
+import WhackSound from '../WhackSound/WhackSound';
 
 type Props = {
     setScore: Dispatch<SetStateAction<number>>;
@@ -23,8 +26,8 @@ const Board = ( {
     , gameLevel
 }: Props ) => {
     const [ moles, setMoles ] = useState<boolean[]>( Array( 16 ).fill( false ) );
-
     const [ cursor, setCursor ] = useState<'' | 'hit'>( '' );
+    const audioRef = useRef<ElementRef<'audio'>>( null );
 
     const hammerHit = ( idx: number, isPopped: boolean ) => {
         setCursor( 'hit' );
@@ -32,6 +35,7 @@ const Board = ( {
 
         if ( !isPopped ) return;
 
+        audioRef?.current?.play();
         toggleMole( idx, false );
         setScore( currScore => currScore + 1 );
     };
@@ -88,6 +92,7 @@ const Board = ( {
                     />
                 ) )
             }
+            <WhackSound audioRef={ audioRef } />
         </Card>
     );
 };

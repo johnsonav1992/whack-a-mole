@@ -1,6 +1,7 @@
 import {
     Button
     , Stack
+    , Typography
 } from '@mui/material';
 
 export type Props = {
@@ -19,10 +20,16 @@ const GameOver = ( {
                 , height: '100vh'
                 , alignItems: 'center'
                 , justifyContent: 'center'
+                , gap: '1rem'
             } }
         >
-            <h1>Game Over!</h1>
-            <h2>Score: { score }</h2>
+            <Typography
+                variant='h1'
+                fontFamily='Whack-A-Mole'
+            >
+                Game Over!
+            </Typography>
+            <Typography variant='h3'>Score: { score }</Typography>
             <Button
                 variant='contained'
                 onClick={ () => resetGame() }
