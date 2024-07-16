@@ -1,10 +1,11 @@
+// MUI
 import {
     Button
     , Stack
     , Typography
 } from '@mui/material';
 
-export type Props = {
+type Props = {
     score: number;
     resetGame: () => void;
 };
@@ -29,7 +30,9 @@ const GameOver = ( {
             >
                 Game Over!
             </Typography>
-            <Typography variant='h3'>Score: { score }</Typography>
+            <Typography variant='h3'>
+                Score: { score }
+            </Typography>
             <Button
                 variant='contained'
                 onClick={ () => resetGame() }

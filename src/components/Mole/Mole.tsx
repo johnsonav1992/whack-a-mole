@@ -1,3 +1,4 @@
+// Assets
 import mole from '../../assets/mole-pop.png';
 import hole from '../../assets/mole-hole.png';
 
@@ -17,9 +18,6 @@ const Mole = ( {
             src={ isPopped ? mole : hole }
             height={ 100 }
             width={ 100 }
-            style={ {
-                // margin: '.5rem'
-            } }
             onClick={ () => hammerHit( moleIndex, isPopped ) }
         />
     );

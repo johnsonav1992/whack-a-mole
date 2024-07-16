@@ -1,7 +1,3 @@
-import { Card } from '@mui/material';
-import { backgroundGreen } from '../../theme/theme';
-import hammer from '../../assets/hammer.png';
-import hit from '../../assets/hammer-hit.png';
 import {
     Dispatch
     , ElementRef
@@ -10,9 +6,23 @@ import {
     , useRef
     , useState
 } from 'react';
-import { GameLevel } from '../../types/types';
+
+// MUI
+import { Card } from '@mui/material';
+
+// Components
 import Mole from '../Mole/Mole';
 import WhackSound from '../WhackSound/WhackSound';
+
+// Theme
+import { backgroundGreen } from '../../theme/theme';
+
+// Assets
+import hammer from '../../assets/hammer.png';
+import hit from '../../assets/hammer-hit.png';
+
+// Types
+import { GameLevel } from '../../types/types';
 
 type Props = {
     setScore: Dispatch<SetStateAction<number>>;
@@ -27,7 +37,8 @@ const Board = ( {
 }: Props ) => {
     const [ moles, setMoles ] = useState<boolean[]>( Array( 16 ).fill( false ) );
     const [ cursor, setCursor ] = useState<'' | 'hit'>( '' );
-    const audioRef = useRef<ElementRef<'audio'>>( null );
+
+    const whackSoundRef = useRef<ElementRef<'audio'>>( null );
 
     const hammerHit = ( idx: number, isPopped: boolean ) => {
         setCursor( 'hit' );
@@ -35,7 +46,7 @@ const Board = ( {
 
         if ( !isPopped ) return;
 
-        audioRef?.current?.play();
+        whackSoundRef?.current?.play();
         toggleMole( idx, false );
         setScore( currScore => currScore + 1 );
     };
@@ -78,7 +89,6 @@ const Board = ( {
                 , aspectRatio: 1
                 , backgroundColor: backgroundGreen
                 , padding: '1.5rem'
-                // , cursor: `url('${ cursor === 'hit' ? hit : hammer }') 64 32, auto`
                 , cursor: `url('${ cursor === 'hit' ? hit : hammer }') 64 32, auto`
             } }
         >
@@ -92,7 +102,7 @@ const Board = ( {
                     />
                 ) )
             }
-            <WhackSound audioRef={ audioRef } />
+            <WhackSound audioRef={ whackSoundRef } />
         </Card>
     );
 };

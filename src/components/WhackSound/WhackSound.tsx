@@ -2,9 +2,11 @@ import {
     ElementRef
     , LegacyRef
 } from 'react';
+
+// Assets
 import whack from '../../assets/whack.mp3';
 
-export type Props = {
+type Props = {
     audioRef: LegacyRef<ElementRef<'audio'>>;
 };
 

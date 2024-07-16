@@ -1,9 +1,10 @@
+// MUI
 import {
     Paper
     , Typography
 } from '@mui/material';
 
-export type Props = {
+type Props = {
     score: number;
     remainingTime: number;
 };
