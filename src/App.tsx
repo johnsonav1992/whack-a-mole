@@ -28,7 +28,7 @@ import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
-    const [ gameLevel, setGameLevel ] = useState<GameLevel>( GAME_LEVELS.child );
+    const [ gameLevel, _ ] = useState<GameLevel>( GAME_LEVELS.child );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
 

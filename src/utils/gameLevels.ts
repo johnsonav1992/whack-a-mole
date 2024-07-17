@@ -5,7 +5,7 @@ export const GAME_LEVELS: Record<GameLevel['level'], GameLevel> = {
     child: {
         level: 'child'
         , gameDuration: 60
-        , moleUpTime: 4000
+        , moleUpTime: 7000
         , moleUpFrequencyBase: 2500
         , moleUpFrequencyUpper: 250
         , moleUpFrequencyLower: 1750

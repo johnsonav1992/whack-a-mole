@@ -62,6 +62,12 @@ const Board = ( {
     };
 
     useEffect( () => {
+        document.addEventListener( 'contextmenu', event => {
+            event.preventDefault();
+        } );
+    }, [] );
+
+    useEffect( () => {
         if ( !remainingTime ) return;
 
         const moleUpFreq = getRandomTimeWithinRange(

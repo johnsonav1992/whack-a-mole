@@ -19,6 +19,8 @@ const Mole = ( {
             height={ 100 }
             width={ 100 }
             onClick={ () => hammerHit( moleIndex, isPopped ) }
+            draggable={ false }
+            style={ { userSelect: 'none' } }
         />
     );
 };
