@@ -13,6 +13,12 @@ dependencies:
     version: 10.9.2(@types/node@20.14.12)(typescript@5.5.4)
 
 devDependencies:
+  '@eslint/eslintrc':
+    specifier: ^3.1.0
+    version: 3.1.0
+  '@eslint/js':
+    specifier: ^9.7.0
+    version: 9.7.0
   '@types/node':
     specifier: ^20.14.12
     version: 20.14.12
@@ -28,6 +34,12 @@ devDependencies:
   eslint:
     specifier: ^9.7.0
     version: 9.7.0
+  eslint-plugin-no-autofix:
+    specifier: ^2.0.0
+    version: 2.0.0(eslint@9.7.0)
+  globals:
+    specifier: ^15.8.0
+    version: 15.8.0
   johnsonav-eslint-config:
     specifier: ^0.0.4
     version: 0.0.4(@typescript-eslint/parser@7.17.0)(eslint@9.7.0)(typescript@5.5.4)
@@ -1393,6 +1405,17 @@ packages:
       find-up: 5.0.0
     dev: true
 
+  /eslint-plugin-no-autofix@2.0.0(eslint@9.7.0):
+    resolution: {integrity: sha512-x9dbjpWVp/lg9vZ5161W29vDTjSw0MJRc6OQxV54pcY1y+zxZWmjq7WJ1UxA96DSZ74k1aBLFGjMV8UlAoofyQ==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      eslint: '>=8'
+    dependencies:
+      eslint: 9.7.0
+      eslint-rule-composer: 0.3.0
+      find-up: 5.0.0
+    dev: true
+
   /eslint-plugin-promise@6.6.0(eslint@9.7.0):
     resolution: {integrity: sha512-57Zzfw8G6+Gq7axm2Pdo3gW/Rx3h9Yywgn61uE/3elTCOePEHVrn2i5CdfBwA1BLK0Q0WqctICIUSqXZW/VprQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
@@ -1783,6 +1806,11 @@ packages:
 
   /globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
+    engines: {node: '>=18'}
+    dev: true
+
+  /globals@15.8.0:
+    resolution: {integrity: sha512-VZAJ4cewHTExBWDHR6yptdIBlx9YSSZuwojj9Nt5mBRXQzrKakDsVKQ1J63sklLvzAJm0X5+RpO4i3Y2hcOnFw==}
     engines: {node: '>=18'}
     dev: true
 
