@@ -11,6 +11,8 @@
         "outDir": "dist",
         "baseUrl": "./app/",
         "experimentalDecorators": true,
-        "emitDecoratorMetadata": true
+        "emitDecoratorMetadata": true,
+        "allowImportingTsExtensions": true,
+        "noEmit": true
     }
 }
