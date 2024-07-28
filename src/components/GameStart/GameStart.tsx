@@ -5,8 +5,11 @@ import {
 } from '@mui/material';
 import ViewWrapper from '../ViewWrapper/ViewWrapper';
 
+// Types
+import { GameStep } from '../../types/types';
+
 type Props = {
-    resetGame: () => void;
+    resetGame: ( gameStep?: GameStep ) => void;
 };
 
 const GameStart = ( { resetGame }: Props ) => {
@@ -20,7 +23,7 @@ const GameStart = ( { resetGame }: Props ) => {
             </Typography>
             <Button
                 variant='contained'
-                onClick={ () => resetGame() }
+                onClick={ () => resetGame( 'active' ) }
                 size='large'
             >
                 Lets Play!

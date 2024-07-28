@@ -14,16 +14,13 @@ import ViewWrapper from './components/ViewWrapper/ViewWrapper';
 import GameStart from './components/GameStart/GameStart';
 import UserSignin from './components/UserSignin/UserSignin';
 
-// Utils
-import { GAME_LEVELS } from './utils/gameLevels';
-
 // Hooks
 import { useTimer } from './hooks/useTimer';
 import { useFont } from './hooks/useFont';
 
 // Types
 import {
-    GameLevel
+    GameSettings
     , GameStep
 } from './types/types';
 
@@ -32,11 +29,12 @@ import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
-    const [ gameLevel, _ ] = useState<GameLevel>( GAME_LEVELS.child );
-    const [ numPlayers, setNumPlayers ] = useState( 1 );
+    const [ gameSettings, setGameSettings ] = useState<GameSettings>( {
+        gameLevel: null
+        , userName: ''
+        , numPlayers: 1
+    } );
     const [ gameStep, setGameStep ] = useState<GameStep>( 'players' );
-
-    console.log( numPlayers );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
 
@@ -45,17 +43,21 @@ function App () {
         , setRemainingTime
     } = useTimer( { gameDuration: null } );
 
-    const resetGame = () => {
-        setRemainingTime( gameLevel.gameDuration );
+    const resetGame = ( gameStep?: GameStep ) => {
+        if ( gameSettings.gameLevel ) {
+            setRemainingTime( gameSettings.gameLevel.gameDuration );
+        }
         setScore( 0 );
+        gameStep && setGameStep( gameStep );
     };
 
     const renderView = () => {
         switch ( gameStep ) {
             case 'players': return (
                 <UserSignin
-                    numPlayers={ numPlayers }
-                    setNumPlayers={ setNumPlayers }
+                    numPlayers={ gameSettings.numPlayers }
+                    gameSettings={ gameSettings }
+                    setGameSettings={ setGameSettings }
                     setGameStep={ setGameStep }
                 />
             );
@@ -71,27 +73,29 @@ function App () {
                 />
             );
             case 'active':
-                return remainingTime && (
-                    <ViewWrapper>
-                        <Typography
-                            fontFamily='Whack-A-Mole'
-                            variant='h1'
-                        >
-                            Whack-A-Mole!
-                        </Typography>
-                        <Stack>
-                            <ScoreBoard
-                                score={ score }
-                                remainingTime={ remainingTime }
-                            />
-                            <Board
-                                setScore={ setScore }
-                                remainingTime={ remainingTime }
-                                gameLevel={ gameLevel }
-                            />
-                        </Stack>
-                    </ViewWrapper>
-                );
+                return remainingTime
+                    && gameSettings.gameLevel
+                    && (
+                        <ViewWrapper>
+                            <Typography
+                                fontFamily='Whack-A-Mole'
+                                variant='h1'
+                            >
+                                Whack-A-Mole!
+                            </Typography>
+                            <Stack>
+                                <ScoreBoard
+                                    score={ score }
+                                    remainingTime={ remainingTime }
+                                />
+                                <Board
+                                    setScore={ setScore }
+                                    remainingTime={ remainingTime }
+                                    gameLevel={ gameSettings.gameLevel }
+                                />
+                            </Stack>
+                        </ViewWrapper>
+                    );
         }
     };
 

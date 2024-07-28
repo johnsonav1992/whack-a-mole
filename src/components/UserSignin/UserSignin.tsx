@@ -1,27 +1,51 @@
 import {
+    ChangeEvent
+    , Dispatch
+    , SetStateAction
+    , useCallback
+} from 'react';
+
+// MUI
+import {
     Button
     , FormControlLabel
     , Radio
     , RadioGroup
+    , TextField
     , Typography
 } from '@mui/material';
+
+// Components
 import ViewWrapper from '../ViewWrapper/ViewWrapper';
+
+import { debounce } from 'lodash';
+
+// Types
 import {
-    Dispatch
-    , SetStateAction
-} from 'react';
-import { GameStep } from '../../types/types';
+    GameSettings
+    , GameStep
+} from '../../types/types';
 
 type Props = {
     numPlayers: number;
-    setNumPlayers: Dispatch<SetStateAction<number>>;
+    gameSettings: GameSettings;
+    setGameSettings: Dispatch<SetStateAction<GameSettings>>;
     setGameStep: Dispatch<SetStateAction<GameStep>>;
 };
+
 const UserSignin = ( {
     numPlayers
-    , setNumPlayers
+    , gameSettings
+    , setGameSettings
     , setGameStep
 }: Props ) => {
+    const buttonDisabled = !gameSettings.gameLevel && !gameSettings.userName;
+
+    const updateUsername = useCallback( debounce( ( e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => setGameSettings( settings => ( {
+        ...settings
+        , userName: e.target.value
+    } ) ), 500 ), [] );
+
     return (
         <ViewWrapper>
             <Typography
@@ -31,11 +55,23 @@ const UserSignin = ( {
                 Whack-A-Mole!
             </Typography>
             <Typography>
+                Please Choose Your Username
+            </Typography>
+            <TextField
+                onChange={ e => updateUsername( e ) }
+                value={ gameSettings.userName }
+            />
+            <Typography>
                 Please Choose Number of Players
             </Typography>
             <RadioGroup
                 value={ numPlayers }
-                onChange={ e => setNumPlayers( Number( e.target.value ) ) }
+                onChange={
+                    e => setGameSettings( settings => ( {
+                        ...settings
+                        , numPlayers: Number( e.target.value )
+                    } ) )
+                }
             >
                 <FormControlLabel
                     label='1 Player'
@@ -49,6 +85,7 @@ const UserSignin = ( {
             <Button
                 variant='contained'
                 onClick={ () => setGameStep( 'start' ) }
+                disabled={ buttonDisabled }
             >
                 Select
             </Button>

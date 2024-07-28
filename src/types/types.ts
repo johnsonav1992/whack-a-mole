@@ -28,3 +28,9 @@ export type GameLevel = {
 };
 
 export type GameStep = 'players' | 'level' | 'start' | 'active' | 'waiting' | 'finished';
+
+export type GameSettings = {
+    numPlayers: number;
+    gameLevel: GameLevel | null;
+    userName: string;
+};
