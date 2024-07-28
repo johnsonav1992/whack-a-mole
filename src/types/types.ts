@@ -26,3 +26,5 @@ export type GameLevel = {
      */
     moleUpFrequencyLower: number;
 };
+
+export type GameStep = 'players' | 'level' | 'start' | 'active' | 'waiting' | 'finished';
