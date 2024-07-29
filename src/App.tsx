@@ -3,12 +3,16 @@ import {
     , useState
 } from 'react';
 
+// MUI
+import { Typography } from '@mui/material';
+
 // Components
 import GameOver from './components/GameOver/GameOver';
 import GameStart from './components/GameStart/GameStart';
 import UserSignin from './components/UserSignin/UserSignin';
 import WaitingRoom from './components/WaitingRoom/WaitingRoom';
 import GameScreen from './components/GameScreen/GameScreen';
+import ViewWrapper from './components/ViewWrapper/ViewWrapper';
 
 // Hooks
 import { useTimer } from './hooks/useTimer';
@@ -25,8 +29,6 @@ import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
 // Utils
 import { defaultGameSettings } from './utils/gameSettings';
-import ViewWrapper from './components/ViewWrapper/ViewWrapper';
-import { Typography } from '@mui/material';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
