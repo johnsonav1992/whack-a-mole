@@ -7,6 +7,8 @@ import {
 import GameOver from './components/GameOver/GameOver';
 import GameStart from './components/GameStart/GameStart';
 import UserSignin from './components/UserSignin/UserSignin';
+import WaitingRoom from './components/WaitingRoom/WaitingRoom';
+import GameScreen from './components/GameScreen/GameScreen';
 
 // Hooks
 import { useTimer } from './hooks/useTimer';
@@ -23,8 +25,6 @@ import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
 // Utils
 import { defaultGameSettings } from './utils/gameSettings';
-import WaitingRoom from './components/WaitingRoom/WaitingRoom';
-import GameScreen from './components/GameScreen/GameScreen';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
@@ -70,9 +70,7 @@ function App () {
                 <WaitingRoom />
             );
             case 'start': return (
-                <GameStart
-                    resetGame={ resetGame }
-                />
+                <GameStart resetGame={ resetGame } />
             );
             case 'finished': return (
                 <GameOver
