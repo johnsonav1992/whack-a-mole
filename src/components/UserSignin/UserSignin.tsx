@@ -40,7 +40,6 @@ const UserSignin = ( {
     , setGameStep
 }: Props ) => {
     const buttonDisabled = !gameSettings.gameLevel && !gameSettings.userName;
-    console.log( gameSettings );
 
     return (
         <ViewWrapper>
