@@ -1,8 +1,4 @@
-import {
-    Stack
-    , Typography
-} from '@mui/material';
-import ViewWrapper from '../ViewWrapper/ViewWrapper';
+import { Stack } from '@mui/material';
 import ScoreBoard from '../ScoreBoard/ScoreBoard';
 import Board from '../Board/Board';
 import {
@@ -28,13 +24,7 @@ const GameScreen = ( {
         remainingTime
         && gameSettings.gameLevel
         && (
-            <ViewWrapper>
-                <Typography
-                    fontFamily='Whack-A-Mole'
-                    variant='h1'
-                >
-                    Whack-A-Mole!
-                </Typography>
+            <>
                 <Stack>
                     <ScoreBoard
                         score={ score }
@@ -46,7 +36,7 @@ const GameScreen = ( {
                         gameLevel={ gameSettings.gameLevel }
                     />
                 </Stack>
-            </ViewWrapper>
+            </>
         )
     );
 };

@@ -4,9 +4,6 @@ import {
     , Typography
 } from '@mui/material';
 
-// Components
-import ViewWrapper from '../ViewWrapper/ViewWrapper';
-
 // Types
 import { ResetGameFn } from '../../types/types';
 
@@ -20,7 +17,7 @@ const GameOver = ( {
     , resetGame
 }: Props ) => {
     return (
-        <ViewWrapper>
+        <>
             <Typography
                 variant='h1'
                 fontFamily='Whack-A-Mole'
@@ -37,7 +34,7 @@ const GameOver = ( {
             >
                 Play Again!
             </Button>
-        </ViewWrapper>
+        </>
     );
 };
 

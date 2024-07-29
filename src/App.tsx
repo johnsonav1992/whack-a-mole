@@ -25,6 +25,8 @@ import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
 // Utils
 import { defaultGameSettings } from './utils/gameSettings';
+import ViewWrapper from './components/ViewWrapper/ViewWrapper';
+import { Typography } from '@mui/material';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
@@ -89,7 +91,17 @@ function App () {
         }
     };
 
-    return renderView();
+    return (
+        <ViewWrapper>
+            <Typography
+                fontFamily='Whack-A-Mole'
+                variant='h1'
+            >
+                Whack-A-Mole!
+            </Typography>
+            { renderView() }
+        </ViewWrapper>
+    );
 }
 
 export default App;

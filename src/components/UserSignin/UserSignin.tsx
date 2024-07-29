@@ -14,9 +14,6 @@ import {
     , capitalize
 } from '@mui/material';
 
-// Components
-import ViewWrapper from '../ViewWrapper/ViewWrapper';
-
 // Types
 import {
     GameSettings
@@ -42,13 +39,7 @@ const UserSignin = ( {
     const buttonDisabled = !gameSettings.gameLevel && !gameSettings.userName;
 
     return (
-        <ViewWrapper>
-            <Typography
-                fontFamily='Whack-A-Mole'
-                variant='h1'
-            >
-                Whack-A-Mole!
-            </Typography>
+        <>
             <Typography>
                 Please Choose Your Username
             </Typography>
@@ -116,7 +107,7 @@ const UserSignin = ( {
             >
                 Continue
             </Button>
-        </ViewWrapper>
+        </>
     );
 };
 

@@ -1,11 +1,5 @@
 // MUI
-import {
-    Button
-    , Typography
-} from '@mui/material';
-
-// Components
-import ViewWrapper from '../ViewWrapper/ViewWrapper';
+import { Button } from '@mui/material';
 
 // Types
 import { ResetGameFn } from '../../types/types';
@@ -16,21 +10,14 @@ type Props = {
 
 const GameStart = ( { resetGame }: Props ) => {
     return (
-        <ViewWrapper sx={ { gap: '2rem' } }>
-            <Typography
-                fontFamily='Whack-A-Mole'
-                variant='h1'
-            >
-                Whack-A-Mole!
-            </Typography>
-            <Button
-                variant='contained'
-                onClick={ () => resetGame( 'active' ) }
-                size='large'
-            >
-                Lets Play!
-            </Button>
-        </ViewWrapper>
+        <Button
+            variant='contained'
+            onClick={ () => resetGame( 'active' ) }
+            size='large'
+            sx={ { mt: '2rem' } }
+        >
+            Lets Play!
+        </Button>
     );
 };
 
