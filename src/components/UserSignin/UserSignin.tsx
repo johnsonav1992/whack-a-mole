@@ -107,7 +107,11 @@ const UserSignin = ( {
             </RadioGroup>
             <Button
                 variant='contained'
-                onClick={ () => setGameStep( 'start' ) }
+                onClick={ () => setGameStep(
+                    gameSettings.numPlayers === 2
+                        ? 'waiting'
+                        : 'start'
+                ) }
                 disabled={ buttonDisabled }
             >
                 Continue

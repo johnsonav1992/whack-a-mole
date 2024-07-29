@@ -3,17 +3,8 @@ import {
     , useState
 } from 'react';
 
-// MUI
-import {
-    Stack
-    , Typography
-} from '@mui/material';
-
 // Components
-import Board from './components/Board/Board';
-import ScoreBoard from './components/ScoreBoard/ScoreBoard';
 import GameOver from './components/GameOver/GameOver';
-import ViewWrapper from './components/ViewWrapper/ViewWrapper';
 import GameStart from './components/GameStart/GameStart';
 import UserSignin from './components/UserSignin/UserSignin';
 
@@ -32,6 +23,8 @@ import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
 // Utils
 import { defaultGameSettings } from './utils/gameSettings';
+import WaitingRoom from './components/WaitingRoom/WaitingRoom';
+import GameScreen from './components/GameScreen/GameScreen';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
@@ -73,6 +66,9 @@ function App () {
                     setGameStep={ setGameStep }
                 />
             );
+            case 'waiting': return (
+                <WaitingRoom />
+            );
             case 'start': return (
                 <GameStart
                     resetGame={ resetGame }
@@ -84,30 +80,14 @@ function App () {
                     resetGame={ resetGame }
                 />
             );
-            case 'active':
-                return remainingTime
-                    && gameSettings.gameLevel
-                    && (
-                        <ViewWrapper>
-                            <Typography
-                                fontFamily='Whack-A-Mole'
-                                variant='h1'
-                            >
-                                Whack-A-Mole!
-                            </Typography>
-                            <Stack>
-                                <ScoreBoard
-                                    score={ score }
-                                    remainingTime={ remainingTime }
-                                />
-                                <Board
-                                    setScore={ setScore }
-                                    remainingTime={ remainingTime }
-                                    gameLevel={ gameSettings.gameLevel }
-                                />
-                            </Stack>
-                        </ViewWrapper>
-                    );
+            case 'active': return (
+                <GameScreen
+                    gameSettings={ gameSettings }
+                    remainingTime={ remainingTime }
+                    score={ score }
+                    setScore={ setScore }
+                />
+            );
         }
     };
 
