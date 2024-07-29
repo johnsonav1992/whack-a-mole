@@ -7,9 +7,12 @@ import {
 // Components
 import ViewWrapper from '../ViewWrapper/ViewWrapper';
 
+// Types
+import { ResetGameFn } from '../../types/types';
+
 type Props = {
     score: number;
-    resetGame: () => void;
+    resetGame: ResetGameFn;
 };
 
 const GameOver = ( {
@@ -29,7 +32,7 @@ const GameOver = ( {
             </Typography>
             <Button
                 variant='contained'
-                onClick={ () => resetGame() }
+                onClick={ () => resetGame( 'players' ) }
                 size='large'
             >
                 Play Again!

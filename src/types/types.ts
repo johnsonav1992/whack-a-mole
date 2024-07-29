@@ -34,3 +34,5 @@ export type GameSettings = {
     gameLevel: GameLevel | null;
     userName: string;
 };
+
+export type ResetGameFn = ( gameStep?: GameStep ) => void;

@@ -1,8 +1,6 @@
 import {
-    ChangeEvent
-    , Dispatch
+    Dispatch
     , SetStateAction
-    , useCallback
 } from 'react';
 
 // MUI
@@ -13,18 +11,20 @@ import {
     , RadioGroup
     , TextField
     , Typography
+    , capitalize
 } from '@mui/material';
 
 // Components
 import ViewWrapper from '../ViewWrapper/ViewWrapper';
-
-import { debounce } from 'lodash';
 
 // Types
 import {
     GameSettings
     , GameStep
 } from '../../types/types';
+
+// Utils
+import { GAME_LEVELS } from '../../utils/gameLevels';
 
 type Props = {
     numPlayers: number;
@@ -40,11 +40,7 @@ const UserSignin = ( {
     , setGameStep
 }: Props ) => {
     const buttonDisabled = !gameSettings.gameLevel && !gameSettings.userName;
-
-    const updateUsername = useCallback( debounce( ( e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement> ) => setGameSettings( settings => ( {
-        ...settings
-        , userName: e.target.value
-    } ) ), 500 ), [] );
+    console.log( gameSettings );
 
     return (
         <ViewWrapper>
@@ -58,7 +54,12 @@ const UserSignin = ( {
                 Please Choose Your Username
             </Typography>
             <TextField
-                onChange={ e => updateUsername( e ) }
+                InputProps={ { sx: { backgroundColor: 'white' } } }
+                size='small'
+                onChange={ e => setGameSettings( settings => ( {
+                    ...settings
+                    , userName: e.target.value
+                } ) ) }
                 value={ gameSettings.userName }
             />
             <Typography>
@@ -72,6 +73,7 @@ const UserSignin = ( {
                         , numPlayers: Number( e.target.value )
                     } ) )
                 }
+                row
             >
                 <FormControlLabel
                     label='1 Player'
@@ -82,12 +84,34 @@ const UserSignin = ( {
                     control={ <Radio value={ 2 } /> }
                 />
             </RadioGroup>
+            <Typography>
+                Please Choose Difficulty Level
+            </Typography>
+            <RadioGroup
+                value={ gameSettings.gameLevel?.level }
+                onChange={
+                    e => setGameSettings( settings => ( {
+                        ...settings
+                        , gameLevel: GAME_LEVELS[ e.target.value as keyof typeof GAME_LEVELS ]
+                    } ) )
+                }
+            >
+                {
+                    Object.entries( GAME_LEVELS ).map( ( [ levelName ] ) => (
+                        <FormControlLabel
+                            key={ levelName }
+                            label={ capitalize( levelName ) }
+                            control={ <Radio value={ levelName } /> }
+                        />
+                    ) )
+                }
+            </RadioGroup>
             <Button
                 variant='contained'
                 onClick={ () => setGameStep( 'start' ) }
                 disabled={ buttonDisabled }
             >
-                Select
+                Continue
             </Button>
         </ViewWrapper>
     );

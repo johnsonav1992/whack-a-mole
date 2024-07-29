@@ -1,5 +1,10 @@
+// Libraries
 import { Socket } from "socket.io";
+
+// Types
 import { ClientToServerEvents } from "../types/socketEventTypes";
+
+// Utils
 import { activeUsers, io } from '../index'
 
 export const userSignedIn = (socket: Socket<ClientToServerEvents>) => {

@@ -1,15 +1,17 @@
-// Components
+// MUI
 import {
     Button
     , Typography
 } from '@mui/material';
+
+// Components
 import ViewWrapper from '../ViewWrapper/ViewWrapper';
 
 // Types
-import { GameStep } from '../../types/types';
+import { ResetGameFn } from '../../types/types';
 
 type Props = {
-    resetGame: ( gameStep?: GameStep ) => void;
+    resetGame: ResetGameFn;
 };
 
 const GameStart = ( { resetGame }: Props ) => {

@@ -1,4 +1,7 @@
-import { useState } from 'react';
+import {
+    useEffect
+    , useState
+} from 'react';
 
 // MUI
 import {
@@ -27,13 +30,12 @@ import {
 // Assets
 import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
+// Utils
+import { defaultGameSettings } from './utils/gameSettings';
+
 function App () {
     const [ score, setScore ] = useState( 0 );
-    const [ gameSettings, setGameSettings ] = useState<GameSettings>( {
-        gameLevel: null
-        , userName: ''
-        , numPlayers: 1
-    } );
+    const [ gameSettings, setGameSettings ] = useState<GameSettings>( defaultGameSettings );
     const [ gameStep, setGameStep ] = useState<GameStep>( 'players' );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
@@ -44,12 +46,22 @@ function App () {
     } = useTimer( { gameDuration: null } );
 
     const resetGame = ( gameStep?: GameStep ) => {
-        if ( gameSettings.gameLevel ) {
+        if ( gameStep === 'players' ) {
+            setRemainingTime( null );
+            setGameSettings( defaultGameSettings );
+        } else if ( gameSettings.gameLevel ) {
             setRemainingTime( gameSettings.gameLevel.gameDuration );
         }
+
         setScore( 0 );
         gameStep && setGameStep( gameStep );
     };
+
+    useEffect( () => {
+        if ( gameStep === 'active' && !remainingTime ) {
+            setGameStep( 'finished' );
+        }
+    }, [ gameStep, remainingTime ] );
 
     const renderView = () => {
         switch ( gameStep ) {
@@ -100,7 +112,6 @@ function App () {
     };
 
     return renderView();
-
 }
 
 export default App;
