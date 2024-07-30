@@ -20,7 +20,8 @@ import { useFont } from './hooks/useFont';
 
 // Types
 import {
-    GameSettings
+    GameRoom
+    , GameSettings
     , GameStep
 } from './types/types';
 
@@ -34,6 +35,10 @@ function App () {
     const [ score, setScore ] = useState( 0 );
     const [ gameSettings, setGameSettings ] = useState<GameSettings>( defaultGameSettings );
     const [ gameStep, setGameStep ] = useState<GameStep>( 'players' );
+    const [ rooms, setRooms ] = useState<GameRoom[]>( [ {
+        name: 'Veggies'
+        , currentPlayers: [ 'aj', null ]
+    } ] );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
 
@@ -70,12 +75,8 @@ function App () {
                     setGameStep={ setGameStep }
                 />
             );
-            case 'waiting': return (
-                <WaitingRoom />
-            );
-            case 'start': return (
-                <GameStart resetGame={ resetGame } />
-            );
+            case 'waiting': return <WaitingRoom rooms={ rooms } />;
+            case 'start': return <GameStart resetGame={ resetGame } />;
             case 'finished': return (
                 <GameOver
                     score={ score }
