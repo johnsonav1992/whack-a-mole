@@ -6,13 +6,16 @@ import {
 
 // MUI
 import {
-    Button
+    Box
+    , Button
     , Dialog
     , DialogContent
     , DialogProps
     , DialogTitle
+    , IconButton
     , Stack
     , TextField
+    , Typography
 } from '@mui/material';
 
 // Types
@@ -20,6 +23,7 @@ import {
     GameRoom
     , GameSettings
 } from '../../types/types';
+import { Close } from '@mui/icons-material';
 
 type Props = DialogProps & {
     rooms: GameRoom[];
@@ -29,6 +33,7 @@ type Props = DialogProps & {
 
 const CreateRoomModal = ( {
     open
+    , onClose
     , rooms
     , setRooms
     , gameSettings
@@ -48,9 +53,33 @@ const CreateRoomModal = ( {
     };
 
     return (
-        <Dialog open={ open }>
+        <Dialog
+            open={ open }
+            onClose={ onClose }
+        >
             <DialogTitle>
-                Select a Room Name
+                <Box
+                    sx={ {
+                        right: '.25rem'
+                        , top: '.25rem'
+                        , position: 'absolute'
+                    } }
+                >
+                    <IconButton
+                        onClick={ () => {
+                            setRoomName( '' );
+                            onClose?.( {}, '' as never );
+                        } }
+                    >
+                        <Close />
+                    </IconButton>
+                </Box>
+                <Typography
+                    mt='1rem'
+                    variant='h6'
+                >
+                    Select a Room Name
+                </Typography>
             </DialogTitle>
             <DialogContent>
                 <Stack gap='1rem'>
