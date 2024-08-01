@@ -1,10 +1,16 @@
-import { Stack } from '@mui/material';
-import ScoreBoard from '../ScoreBoard/ScoreBoard';
-import Board from '../Board/Board';
 import {
     Dispatch
     , SetStateAction
 } from 'react';
+
+// MUI
+import { Stack } from '@mui/material';
+
+// Components
+import ScoreBoard from '../ScoreBoard/ScoreBoard';
+import Board from '../Board/Board';
+
+// Types
 import { GameSettings } from '../../types/types';
 
 type Props = {

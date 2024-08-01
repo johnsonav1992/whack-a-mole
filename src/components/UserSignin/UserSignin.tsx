@@ -39,11 +39,12 @@ const UserSignin = ( {
     , setGameStep
     , rooms
 }: Props ) => {
+    const gameLevelOrUsernameNotSelected = !gameSettings.gameLevel && !gameSettings.userName;
     const isDuplicateUsername
         = rooms.some( room => room.currentPlayers.some( player => player === gameSettings.userName ) )
         && gameSettings.numPlayers === 2;
 
-    const buttonDisabled = ( !gameSettings.gameLevel && !gameSettings.userName ) || isDuplicateUsername;
+    const buttonDisabled = gameLevelOrUsernameNotSelected || isDuplicateUsername;
 
     return (
         <>

@@ -1,3 +1,9 @@
+import {
+    Dispatch
+    , SetStateAction
+    , useState
+} from 'react';
+
 // MUI
 import {
     Box
@@ -10,6 +16,7 @@ import {
 
 // Components
 import RoomCard from '../RoomCard/RoomCard';
+import CreateRoomModal from '../CreateRoomModal/CreateRoomModal';
 
 // Types
 import {
@@ -22,13 +29,17 @@ import { MAX_ROOMS } from '../../utils/gameSettings';
 
 type Props = {
     rooms: GameRoom[];
+    setRooms: Dispatch<SetStateAction<GameRoom[]>>;
     gameSettings: GameSettings;
 };
 
 const WaitingRoom = ( {
     rooms
+    , setRooms
     , gameSettings
 }: Props ) => {
+    const [ modalIsOpen, setModalIsOpen ] = useState( false );
+
     const createButtonDisabled = MAX_ROOMS === rooms.length;
 
     return (
@@ -72,11 +83,19 @@ const WaitingRoom = ( {
                     <Button
                         variant='contained'
                         disabled={ createButtonDisabled }
+                        onClick={ () => setModalIsOpen( true ) }
                     >
                         Create Room
                     </Button>
                 </Box>
             </Tooltip>
+            <CreateRoomModal
+                open={ modalIsOpen }
+                onClose={ () => setModalIsOpen( false ) }
+                rooms={ rooms }
+                setRooms={ setRooms }
+                gameSettings={ gameSettings }
+            />
         </Stack>
     );
 };

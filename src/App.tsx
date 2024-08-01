@@ -85,6 +85,7 @@ function App () {
             case 'waiting': return (
                 <WaitingRoom
                     rooms={ rooms }
+                    setRooms={ setRooms }
                     gameSettings={ gameSettings }
                 />
             );
