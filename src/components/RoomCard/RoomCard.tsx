@@ -13,14 +13,22 @@ import {
 } from '@mui/icons-material';
 
 // Types
-import { GameRoom } from '../../types/types';
+import {
+    GameRoom
+    , GameSettings
+} from '../../types/types';
 
 type Props = {
     room: GameRoom;
+    gameSettings: GameSettings;
 };
 
-const RoomCard = ( { room }: Props ) => {
+const RoomCard = ( {
+    room
+    , gameSettings
+}: Props ) => {
     const roomIsFull = room.currentPlayers.every( Boolean );
+    const userIsInRoom = room.currentPlayers.includes( gameSettings.userName );
 
     return (
         <Card
@@ -75,9 +83,9 @@ const RoomCard = ( { room }: Props ) => {
                 >
                     <Button
                         variant='contained'
-                        disabled={ roomIsFull }
+                        disabled={ roomIsFull && !userIsInRoom }
                     >
-                        Join Room
+                        { userIsInRoom ? 'Start Game' : 'Join Room' }
                     </Button>
                 </Stack>
             </Tooltip>

@@ -12,16 +12,23 @@ import {
 import RoomCard from '../RoomCard/RoomCard';
 
 // Types
-import { GameRoom } from '../../types/types';
+import {
+    GameRoom
+    , GameSettings
+} from '../../types/types';
 
 // Utils
 import { MAX_ROOMS } from '../../utils/gameSettings';
 
 type Props = {
     rooms: GameRoom[];
+    gameSettings: GameSettings;
 };
 
-const WaitingRoom = ( { rooms }: Props ) => {
+const WaitingRoom = ( {
+    rooms
+    , gameSettings
+}: Props ) => {
     const createButtonDisabled = MAX_ROOMS === rooms.length;
 
     return (
@@ -43,12 +50,13 @@ const WaitingRoom = ( { rooms }: Props ) => {
                             >
                                 <RoomCard
                                     room={ room }
+                                    gameSettings={ gameSettings }
                                 />
                             </Grid>
                         ) )
                         : (
                             <Typography>
-                                No rooms available
+                                No rooms available. Create one by clicking the button below!
                             </Typography>
                         )
                 }

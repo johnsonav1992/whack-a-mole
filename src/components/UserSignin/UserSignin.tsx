@@ -16,7 +16,8 @@ import {
 
 // Types
 import {
-    GameSettings
+    GameRoom
+    , GameSettings
     , GameStep
 } from '../../types/types';
 
@@ -28,6 +29,7 @@ type Props = {
     gameSettings: GameSettings;
     setGameSettings: Dispatch<SetStateAction<GameSettings>>;
     setGameStep: Dispatch<SetStateAction<GameStep>>;
+    rooms: GameRoom[];
 };
 
 const UserSignin = ( {
@@ -35,8 +37,13 @@ const UserSignin = ( {
     , gameSettings
     , setGameSettings
     , setGameStep
+    , rooms
 }: Props ) => {
-    const buttonDisabled = !gameSettings.gameLevel && !gameSettings.userName;
+    const isDuplicateUsername
+        = rooms.some( room => room.currentPlayers.some( player => player === gameSettings.userName ) )
+        && gameSettings.numPlayers === 2;
+
+    const buttonDisabled = ( !gameSettings.gameLevel && !gameSettings.userName ) || isDuplicateUsername;
 
     return (
         <>
@@ -51,6 +58,8 @@ const UserSignin = ( {
                     , userName: e.target.value
                 } ) ) }
                 value={ gameSettings.userName }
+                error={ isDuplicateUsername }
+                helperText={ isDuplicateUsername && 'Username already taken' }
             />
             <Typography>
                 Please Choose Number of Players

@@ -44,10 +44,6 @@ function App () {
             name: 'Fruits'
             , currentPlayers: [ 'aj', null ]
         }
-        , {
-            name: 'Breads'
-            , currentPlayers: [ 'aj', null ]
-        }
     ] );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
@@ -83,9 +79,15 @@ function App () {
                     gameSettings={ gameSettings }
                     setGameSettings={ setGameSettings }
                     setGameStep={ setGameStep }
+                    rooms={ rooms }
                 />
             );
-            case 'waiting': return <WaitingRoom rooms={ rooms } />;
+            case 'waiting': return (
+                <WaitingRoom
+                    rooms={ rooms }
+                    gameSettings={ gameSettings }
+                />
+            );
             case 'start': return <GameStart resetGame={ resetGame } />;
             case 'finished': return (
                 <GameOver
