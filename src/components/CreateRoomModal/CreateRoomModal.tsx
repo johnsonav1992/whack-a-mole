@@ -15,7 +15,6 @@ import {
     , IconButton
     , Stack
     , TextField
-    , Typography
 } from '@mui/material';
 
 // Types
@@ -24,11 +23,14 @@ import {
     , GameSettings
 } from '../../types/types';
 import { Close } from '@mui/icons-material';
+import { Socket } from 'socket.io-client';
+import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
 
 type Props = DialogProps & {
     rooms: GameRoom[];
     setRooms: Dispatch<SetStateAction<GameRoom[]>>;
     gameSettings: GameSettings;
+    socket: Socket<ClientToServerEvents> | null;
 };
 
 const CreateRoomModal = ( {
@@ -37,6 +39,7 @@ const CreateRoomModal = ( {
     , rooms
     , setRooms
     , gameSettings
+    , socket
 }: Props ) => {
     const [ roomName, setRoomName ] = useState( '' );
 
@@ -50,6 +53,12 @@ const CreateRoomModal = ( {
                 , currentPlayers: [ gameSettings.userName, null ]
             }
         ] );
+
+        socket?.emit( 'join-room', {
+            room: roomName
+            , userName: gameSettings.userName
+        } );
+
         onClose?.( {}, '' as never );
     };
 
@@ -75,12 +84,9 @@ const CreateRoomModal = ( {
                         <Close />
                     </IconButton>
                 </Box>
-                <Typography
-                    mt='1rem'
-                    variant='h6'
-                >
+                <Box mt='1rem'>
                     Select a Room Name
-                </Typography>
+                </Box>
             </DialogTitle>
             <DialogContent>
                 <Stack gap='1rem'>

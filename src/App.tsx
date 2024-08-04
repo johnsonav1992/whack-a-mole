@@ -24,12 +24,17 @@ import {
     , GameSettings
     , GameStep
 } from './types/types';
+import {
+    ClientToServerEvents
+    , ServerToClientEvents
+} from '../backend/types/socketEventTypes.ts';
 
 // Assets
 import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
 // Utils
 import { defaultGameSettings } from './utils/gameSettings';
+import { useSocket } from './hooks/useSocket';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
@@ -38,6 +43,14 @@ function App () {
     const [ rooms, setRooms ] = useState<GameRoom[]>( [] );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
+
+    const { socket } = useSocket<ServerToClientEvents, ClientToServerEvents>( {
+        listenEvents: {
+            'player-signed-in': e => {
+                console.log( `player ${ e.playerUsername } signed in` );
+            }
+        }
+    } );
 
     const {
         remainingTime
@@ -71,6 +84,7 @@ function App () {
                     setGameSettings={ setGameSettings }
                     setGameStep={ setGameStep }
                     rooms={ rooms }
+                    socket={ socket }
                 />
             );
             case 'waiting': return (
@@ -78,6 +92,7 @@ function App () {
                     rooms={ rooms }
                     setRooms={ setRooms }
                     gameSettings={ gameSettings }
+                    socket={ socket }
                 />
             );
             case 'start': return <GameStart resetGame={ resetGame } />;

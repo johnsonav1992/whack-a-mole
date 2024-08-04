@@ -26,17 +26,21 @@ import {
 
 // Utils
 import { MAX_ROOMS } from '../../utils/gameSettings';
+import { Socket } from 'socket.io-client';
+import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
 
 type Props = {
     rooms: GameRoom[];
     setRooms: Dispatch<SetStateAction<GameRoom[]>>;
     gameSettings: GameSettings;
+    socket: Socket<ClientToServerEvents> | null;
 };
 
 const WaitingRoom = ( {
     rooms
     , setRooms
     , gameSettings
+    , socket
 }: Props ) => {
     const [ modalIsOpen, setModalIsOpen ] = useState( false );
 
@@ -97,6 +101,7 @@ const WaitingRoom = ( {
                 rooms={ rooms }
                 setRooms={ setRooms }
                 gameSettings={ gameSettings }
+                socket={ socket }
             />
         </Stack>
     );

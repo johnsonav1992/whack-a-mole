@@ -23,6 +23,8 @@ import {
 
 // Utils
 import { GAME_LEVELS } from '../../utils/gameLevels';
+import { Socket } from 'socket.io-client';
+import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
 
 type Props = {
     numPlayers: number;
@@ -30,6 +32,7 @@ type Props = {
     setGameSettings: Dispatch<SetStateAction<GameSettings>>;
     setGameStep: Dispatch<SetStateAction<GameStep>>;
     rooms: GameRoom[];
+    socket: Socket<ClientToServerEvents> | null;
 };
 
 const UserSignin = ( {
@@ -38,6 +41,7 @@ const UserSignin = ( {
     , setGameSettings
     , setGameStep
     , rooms
+    , socket
 }: Props ) => {
     const gameLevelOrUsernameNotSelected = !gameSettings.gameLevel || !gameSettings.userName;
     const isDuplicateUsername
@@ -45,6 +49,18 @@ const UserSignin = ( {
         && gameSettings.numPlayers === 2;
 
     const buttonDisabled = gameLevelOrUsernameNotSelected || isDuplicateUsername;
+
+    const continueToGame = () => {
+        if ( gameSettings.numPlayers === 2 ) {
+            socket?.emit(
+                'player-signed-in'
+                , { playerUsername: gameSettings.userName }
+            );
+            setGameStep( 'waiting' );
+        } else {
+            setGameStep( 'start' );
+        }
+    };
 
     return (
         <>
@@ -108,11 +124,7 @@ const UserSignin = ( {
             </RadioGroup>
             <Button
                 variant='contained'
-                onClick={ () => setGameStep(
-                    gameSettings.numPlayers === 2
-                        ? 'waiting'
-                        : 'start'
-                ) }
+                onClick={ continueToGame }
                 disabled={ buttonDisabled }
             >
                 Continue
