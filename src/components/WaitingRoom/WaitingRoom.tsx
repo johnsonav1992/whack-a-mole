@@ -41,6 +41,7 @@ const WaitingRoom = ( {
     const [ modalIsOpen, setModalIsOpen ] = useState( false );
 
     const createButtonDisabled = MAX_ROOMS === rooms.length;
+    const roomUserIsCurrentlyIn = rooms.filter( room => room.currentPlayers.includes( gameSettings.userName ) )[ 0 ];
 
     return (
         <Stack
@@ -62,6 +63,7 @@ const WaitingRoom = ( {
                                 <RoomCard
                                     room={ room }
                                     gameSettings={ gameSettings }
+                                    roomUserIsCurrentlyIn={ roomUserIsCurrentlyIn }
                                 />
                             </Grid>
                         ) )

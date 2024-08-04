@@ -35,16 +35,7 @@ function App () {
     const [ score, setScore ] = useState( 0 );
     const [ gameSettings, setGameSettings ] = useState<GameSettings>( defaultGameSettings );
     const [ gameStep, setGameStep ] = useState<GameStep>( 'players' );
-    const [ rooms, setRooms ] = useState<GameRoom[]>( [
-        {
-            name: 'Veggies'
-            , currentPlayers: [ 'aj', null ]
-        }
-        , {
-            name: 'Fruits'
-            , currentPlayers: [ 'aj', null ]
-        }
-    ] );
+    const [ rooms, setRooms ] = useState<GameRoom[]>( [] );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
 

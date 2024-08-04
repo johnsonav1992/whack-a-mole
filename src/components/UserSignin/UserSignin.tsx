@@ -39,7 +39,7 @@ const UserSignin = ( {
     , setGameStep
     , rooms
 }: Props ) => {
-    const gameLevelOrUsernameNotSelected = !gameSettings.gameLevel && !gameSettings.userName;
+    const gameLevelOrUsernameNotSelected = !gameSettings.gameLevel || !gameSettings.userName;
     const isDuplicateUsername
         = rooms.some( room => room.currentPlayers.some( player => player === gameSettings.userName ) )
         && gameSettings.numPlayers === 2;

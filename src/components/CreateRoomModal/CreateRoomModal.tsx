@@ -40,7 +40,7 @@ const CreateRoomModal = ( {
 }: Props ) => {
     const [ roomName, setRoomName ] = useState( '' );
 
-    const isDuplicateRoomName = rooms.some( room => room.name === roomName );
+    const isDuplicateRoomName = rooms.some( room => room.name === roomName ) && open;
 
     const createRoom = () => {
         setRooms( rooms => [
@@ -50,6 +50,7 @@ const CreateRoomModal = ( {
                 , currentPlayers: [ gameSettings.userName, null ]
             }
         ] );
+        onClose?.( {}, '' as never );
     };
 
     return (

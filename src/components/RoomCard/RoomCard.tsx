@@ -21,14 +21,20 @@ import {
 type Props = {
     room: GameRoom;
     gameSettings: GameSettings;
+    roomUserIsCurrentlyIn: GameRoom;
 };
 
 const RoomCard = ( {
     room
     , gameSettings
+    , roomUserIsCurrentlyIn
 }: Props ) => {
     const roomIsFull = room.currentPlayers.every( Boolean );
     const userIsInRoom = room.currentPlayers.includes( gameSettings.userName );
+    const userCannotJoinRoomBecauseTheyAreInAnotherRoom
+        = roomUserIsCurrentlyIn
+            ? roomUserIsCurrentlyIn.name !== room.name
+            : false;
 
     return (
         <Card
@@ -65,7 +71,7 @@ const RoomCard = ( {
                                     )
                                     : (
                                         <>
-                                            <Pending color='warning' />
+                                            <Pending color='action' />
                                             <Typography>
                                                 Waiting for player...
                                             </Typography>
@@ -83,7 +89,7 @@ const RoomCard = ( {
                 >
                     <Button
                         variant='contained'
-                        disabled={ roomIsFull && !userIsInRoom }
+                        disabled={ ( roomIsFull && !userIsInRoom ) || userCannotJoinRoomBecauseTheyAreInAnotherRoom }
                     >
                         { userIsInRoom ? 'Start Game' : 'Join Room' }
                     </Button>
