@@ -37,7 +37,8 @@ export type GameSettings = {
 
 export type ResetGameFn = ( gameStep?: GameStep ) => void;
 
+export type Players = [string | null, string | null];
 export type GameRoom = {
     name: string;
-    currentPlayers: [string | null, string | null];
+    currentPlayers: Players;
 };

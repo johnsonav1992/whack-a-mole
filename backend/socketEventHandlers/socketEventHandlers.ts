@@ -12,7 +12,7 @@ export const userSignedIn = (socket: WhackAMoleSocket) => {
         activeUsers.set(socket.id, newUser)
         console.log('Current Active Users:', Object.fromEntries(activeUsers.entries()));
 
-        socket.emit( 'player-signed-in', { playerUsername: newUser } )
+        io.emit( 'player-signed-in', { playerUsername: newUser } )
     })
 }
 
@@ -20,9 +20,23 @@ export const joinRoom = (socket: WhackAMoleSocket) => {
     socket.on('join-room', e => {
         socket.join(e.room)
         console.log(socket.rooms)
+
+        socket.broadcast.emit('join-room', { room: e.room, userName: e.userName })
     })
 }
 
 export const moleWhacked = (socket: WhackAMoleSocket) => {
     socket.on('mole-whacked', ev => io.emit('mole-whacked', ev))
+}
+
+export const userLeave = (socket: WhackAMoleSocket) => {
+    socket.on('disconnect', () => {
+        const user = activeUsers.get(socket.id)
+        console.log('User disconnected:', socket.id, user);
+
+        activeUsers.delete(socket.id)
+        console.log('Current Active Users:', Object.fromEntries(activeUsers.entries()));
+
+        io.emit('user-leave', { userName: user as string })
+    })
 }

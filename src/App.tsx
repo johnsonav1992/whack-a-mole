@@ -41,13 +41,46 @@ function App () {
     const [ gameSettings, setGameSettings ] = useState<GameSettings>( defaultGameSettings );
     const [ gameStep, setGameStep ] = useState<GameStep>( 'players' );
     const [ rooms, setRooms ] = useState<GameRoom[]>( [] );
+    const [ signedInPlayers, setSetSignedInPlayers ] = useState<string[]>( [] );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
 
     const { socket } = useSocket<ServerToClientEvents, ClientToServerEvents>( {
         listenEvents: {
-            'player-signed-in': e => {
-                console.log( `player ${ e.playerUsername } signed in` );
+            'load-current-players': e => {
+                setSetSignedInPlayers( e.currentPlayers );
+            }
+            , 'load-current-rooms': e => {
+                setRooms( e.currentRooms );
+            }
+            , 'player-signed-in': e => {
+                setSetSignedInPlayers( players => [ ...players, e.playerUsername ] );
+            }
+            , 'join-room': e => {
+                const roomName = e.room;
+                const user = e.userName;
+
+                // TODO: simplify this
+                if ( rooms.some( room => room.name === roomName ) ) {
+                    const updatedRooms = rooms.map( room => {
+                        if ( room.name === roomName ) {
+                            return {
+                                ...room
+                                , players: [ ...room.currentPlayers, user ]
+                            };
+                        }
+                        return room;
+                    } );
+                    setRooms( updatedRooms );
+                } else {
+                    setRooms( prevRooms => [ ...prevRooms, {
+                        name: roomName
+                        , currentPlayers: [ user, null ]
+                    } ] );
+                }
+            }
+            , 'user-leave': e => {
+                setSetSignedInPlayers( players => players.filter( player => player !== e.userName ) );
             }
         }
     } );
@@ -120,6 +153,17 @@ function App () {
                 variant='h1'
             >
                 Whack-A-Mole!
+            </Typography>
+            <Typography
+                variant='body2'
+                sx={ {
+                    position: 'absolute'
+                    , top: 0
+                    , right: 0
+                    , m: '1rem'
+                } }
+            >
+                { `Currently Signed-In Players: ${ signedInPlayers.length }` }
             </Typography>
             { renderView() }
         </ViewWrapper>
