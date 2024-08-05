@@ -60,24 +60,29 @@ function App () {
                 const roomName = e.room;
                 const user = e.userName;
 
-                // TODO: simplify this
-                if ( rooms.some( room => room.name === roomName ) ) {
-                    const updatedRooms = rooms.map( room => {
-                        if ( room.name === roomName ) {
-                            return {
-                                ...room
-                                , players: [ ...room.currentPlayers, user ]
-                            };
-                        }
-                        return room;
-                    } );
-                    setRooms( updatedRooms );
-                } else {
-                    setRooms( prevRooms => [ ...prevRooms, {
-                        name: roomName
-                        , currentPlayers: [ user, null ]
-                    } ] );
-                }
+                setRooms( prevRooms => {
+                    const roomExists = prevRooms.some( room => room.name === roomName );
+
+                    if ( roomExists ) {
+                        return prevRooms.map( room =>
+                            room.name === roomName
+                                ? {
+                                    ...room
+                                    , currentPlayers: [ ...room.currentPlayers, user ] as never
+                                }
+                                : room
+                        );
+                    } else {
+                        return [
+                            ...prevRooms
+                            , {
+                                name: roomName
+                                , currentPlayers: [ user, null ]
+                            }
+                        ];
+                    }
+                } );
+
             }
             , 'user-leave': e => {
                 setSetSignedInPlayers( players => players.filter( player => player !== e.userName ) );
