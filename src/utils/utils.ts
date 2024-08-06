@@ -74,7 +74,6 @@ export const playerLeave = (
                     : roomItem
             );
 
-            // Filter out any room where all elements in currentPlayers are null
             return updatedRooms.filter( room =>
                 !room.currentPlayers.every( player => player === null )
             );

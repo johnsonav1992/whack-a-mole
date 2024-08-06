@@ -67,8 +67,9 @@ const CreateRoomModal = ( {
         <Dialog
             open={ open }
             onClose={ onClose }
+            PaperProps={ { sx: { p: '1rem' } } }
         >
-            <DialogTitle>
+            <DialogTitle sx={ { fontSize: '2rem' } }>
                 <Box
                     sx={ {
                         right: '.25rem'
