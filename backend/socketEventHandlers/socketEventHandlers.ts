@@ -25,6 +25,15 @@ export const joinRoom = (socket: WhackAMoleSocket) => {
     })
 }
 
+export const leaveRoom = (socket: WhackAMoleSocket) => {
+    socket.on('leave-room', e => {
+        socket.leave(e.room)
+        console.log(socket.rooms)
+
+        socket.broadcast.emit('leave-room', { room: e.room, userName: e.userName })
+    })
+}
+
 export const moleWhacked = (socket: WhackAMoleSocket) => {
     socket.on('mole-whacked', ev => io.emit('mole-whacked', ev))
 }

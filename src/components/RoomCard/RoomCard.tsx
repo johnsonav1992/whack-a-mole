@@ -3,12 +3,14 @@ import {
     Button
     , Card
     , Divider
+    , IconButton
     , Stack
     , Tooltip
     , Typography
 } from '@mui/material';
 import {
     CheckCircle
+    , Close
     , Pending
 } from '@mui/icons-material';
 
@@ -17,17 +19,33 @@ import {
     GameRoom
     , GameSettings
 } from '../../types/types';
+import { Socket } from 'socket.io-client';
+import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
+import {
+    Dispatch
+    , SetStateAction
+} from 'react';
+import {
+    playerJoin
+    , playerLeave
+} from '../../utils/utils';
 
 type Props = {
     room: GameRoom;
+    rooms: GameRoom[];
     gameSettings: GameSettings;
     roomUserIsCurrentlyIn: GameRoom;
+    socket: Socket<ClientToServerEvents> | null;
+    setRooms: Dispatch<SetStateAction<GameRoom[]>>;
 };
 
 const RoomCard = ( {
-    room
+    rooms
+    , room
     , gameSettings
     , roomUserIsCurrentlyIn
+    , socket
+    , setRooms
 }: Props ) => {
     const roomIsFull = room.currentPlayers.every( Boolean );
     const userIsInRoom = room.currentPlayers.includes( gameSettings.userName );
@@ -35,6 +53,33 @@ const RoomCard = ( {
         = roomUserIsCurrentlyIn
             ? roomUserIsCurrentlyIn.name !== room.name
             : false;
+
+    const joinRoom = () => {
+        playerJoin(
+            {
+                room: room.name
+                , userName: gameSettings.userName
+            }
+            , setRooms
+        );
+
+        socket?.emit( 'join-room', {
+            userName: gameSettings.userName
+            , room: room.name
+        } );
+    };
+
+    const leaveRoom = () => {
+        playerLeave(
+            gameSettings.userName,
+            setRooms
+        );
+
+        socket?.emit( 'leave-room', {
+            room: room.name
+            , userName: gameSettings.userName
+        } );
+    };
 
     return (
         <Card
@@ -44,6 +89,7 @@ const RoomCard = ( {
                 , flexDirection: 'column'
                 , gap: '.75rem'
                 , alignItems: 'flex-start'
+                , minWidth: '14rem'
             } }
             elevation={ 3 }
         >
@@ -56,18 +102,40 @@ const RoomCard = ( {
                     (
                         <Stack
                             direction='row'
+                            width='100%'
                             gap='.75rem'
                             key={ player }
                         >
                             {
                                 player
                                     ? (
-                                        <>
-                                            <CheckCircle color='success' />
-                                            <Typography>
-                                                { player }
-                                            </Typography>
-                                        </>
+                                        <Stack
+                                            direction='row'
+                                            minWidth='100%'
+                                            justifyContent='space-between'
+                                            alignItems='center'
+                                        >
+                                            <Stack
+                                                direction='row'
+                                                gap='.75rem'
+                                            >
+                                                <CheckCircle color='success' />
+                                                <Typography>
+                                                    { player }
+                                                </Typography>
+                                            </Stack>
+                                            {
+                                                userIsInRoom
+                                                && player === gameSettings.userName
+                                                && (
+                                                    <Tooltip title='Leave room'>
+                                                        <IconButton onClick={ leaveRoom }>
+                                                            <Close color='error' />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                )
+                                            }
+                                        </Stack>
                                     )
                                     : (
                                         <>
@@ -90,6 +158,7 @@ const RoomCard = ( {
                     <Button
                         variant='contained'
                         disabled={ ( roomIsFull && !userIsInRoom ) || userCannotJoinRoomBecauseTheyAreInAnotherRoom }
+                        onClick={ userIsInRoom ? () => {} : joinRoom }
                     >
                         { userIsInRoom ? 'Start Game' : 'Join Room' }
                     </Button>

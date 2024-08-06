@@ -44,8 +44,19 @@ const WaitingRoom = ( {
 }: Props ) => {
     const [ modalIsOpen, setModalIsOpen ] = useState( false );
 
-    const createButtonDisabled = MAX_ROOMS === rooms.length;
     const roomUserIsCurrentlyIn = rooms.filter( room => room.currentPlayers.includes( gameSettings.userName ) )[ 0 ];
+    const createButtonDisabled = MAX_ROOMS === rooms.length || !!roomUserIsCurrentlyIn;
+
+    const getTooltipText = () => {
+        switch ( true ) {
+            case MAX_ROOMS === rooms.length:
+                return 'Max number of rooms created. Please wait to create a new room.';
+            case !!roomUserIsCurrentlyIn:
+                return 'You are already in a room. Please leave that room to create a new one.';
+            default:
+                return '';
+        }
+    };
 
     return (
         <Stack
@@ -66,8 +77,11 @@ const WaitingRoom = ( {
                             >
                                 <RoomCard
                                     room={ room }
+                                    rooms={ rooms }
+                                    setRooms={ setRooms }
                                     gameSettings={ gameSettings }
                                     roomUserIsCurrentlyIn={ roomUserIsCurrentlyIn }
+                                    socket={ socket }
                                 />
                             </Grid>
                         ) )
@@ -79,11 +93,7 @@ const WaitingRoom = ( {
                 }
             </Grid>
             <Tooltip
-                title={
-                    createButtonDisabled
-                        ? 'Max number of rooms created. Please wait to create a new room.'
-                        : ''
-                }
+                title={ getTooltipText() }
             >
                 <Box>
                     <Button

@@ -35,57 +35,41 @@ import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 // Utils
 import { defaultGameSettings } from './utils/gameSettings';
 import { useSocket } from './hooks/useSocket';
+import {
+    playerJoin
+    , playerLeave
+} from './utils/utils.ts';
 
 function App () {
     const [ score, setScore ] = useState( 0 );
     const [ gameSettings, setGameSettings ] = useState<GameSettings>( defaultGameSettings );
     const [ gameStep, setGameStep ] = useState<GameStep>( 'players' );
     const [ rooms, setRooms ] = useState<GameRoom[]>( [] );
-    const [ signedInPlayers, setSetSignedInPlayers ] = useState<string[]>( [] );
+    const [ signedInPlayers, setSignedInPlayers ] = useState<string[]>( [] );
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
 
-    const { socket } = useSocket<ServerToClientEvents, ClientToServerEvents>( {
+    const { socket } = useSocket<
+        ServerToClientEvents
+        , ClientToServerEvents
+    >( {
         listenEvents: {
             'load-current-players': e => {
-                setSetSignedInPlayers( e.currentPlayers );
+                setSignedInPlayers( e.currentPlayers );
             }
             , 'load-current-rooms': e => {
                 setRooms( e.currentRooms );
             }
             , 'player-signed-in': e => {
-                setSetSignedInPlayers( players => [ ...players, e.playerUsername ] );
+                setSignedInPlayers( players => [ ...players, e.playerUsername ] );
             }
-            , 'join-room': e => {
-                const roomName = e.room;
-                const user = e.userName;
-
-                setRooms( prevRooms => {
-                    const roomExists = prevRooms.some( room => room.name === roomName );
-
-                    if ( roomExists ) {
-                        return prevRooms.map( room =>
-                            room.name === roomName
-                                ? {
-                                    ...room
-                                    , currentPlayers: [ ...room.currentPlayers, user ] as never
-                                }
-                                : room
-                        );
-                    } else {
-                        return [
-                            ...prevRooms
-                            , {
-                                name: roomName
-                                , currentPlayers: [ user, null ]
-                            }
-                        ];
-                    }
-                } );
-
+            , 'join-room': e => playerJoin( e, setRooms )
+            , 'leave-room': e => {
+                console.log( e );
+                playerLeave( e.userName, setRooms );
             }
             , 'user-leave': e => {
-                setSetSignedInPlayers( players => players.filter( player => player !== e.userName ) );
+                setSignedInPlayers( players => players.filter( player => player !== e.userName ) );
             }
         }
     } );

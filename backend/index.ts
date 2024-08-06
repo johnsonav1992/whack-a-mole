@@ -6,7 +6,7 @@ import {
     ClientToServerEvents
     , ServerToClientEvents 
 } from './types/socketEventTypes.js'
-import { joinRoom, moleWhacked, userLeave, userSignedIn } from "./socketEventHandlers/socketEventHandlers.ts";
+import { joinRoom, leaveRoom, moleWhacked, userLeave, userSignedIn } from "./socketEventHandlers/socketEventHandlers.ts";
 import { getRoomsAndPlayers, registerHandlers } from "./utils/utils.ts";
 
 const PORT = 8000;
@@ -35,6 +35,7 @@ io.on( "connection", socket => {
     registerHandlers(socket,
         userSignedIn,
         joinRoom,
+        leaveRoom,
         moleWhacked,
         userLeave
     )

@@ -4,7 +4,8 @@ export type ClientToServerEvents = {
     'player-signed-in': SignInEvent;
     'mole-whacked': WhackEvent;
     'player-whack-attempt': WhackEvent;
-    'join-room': JoinRoomEvent;
+    'join-room': JoinOrLeaveRoomEvent;
+    'leave-room': JoinOrLeaveRoomEvent;
 };
 
 export type ServerToClientEvents = Partial<{
@@ -13,10 +14,11 @@ export type ServerToClientEvents = Partial<{
     'load-current-rooms': ( params: { currentRooms: GameRoom[] } ) => void;
     'mole-whacked': WhackEvent;
     'player-whack-attempt': WhackEvent;
-    'join-room': JoinRoomEvent;
+    'join-room': JoinOrLeaveRoomEvent;
+    'leave-room': JoinOrLeaveRoomEvent;
     'user-leave': ( params: { userName: string } ) => void;
 }>;
 
 type WhackEvent = ( params: { moleIndex: number; playerId: number } ) => void;
 type SignInEvent = ( params: { playerUsername: string } ) => void;
-type JoinRoomEvent = ( params: { room: string, userName: string } ) => void;
+export type JoinOrLeaveRoomEvent = ( params: { room: string, userName: string } ) => void;

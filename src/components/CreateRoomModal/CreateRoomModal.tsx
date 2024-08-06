@@ -59,6 +59,7 @@ const CreateRoomModal = ( {
             , userName: gameSettings.userName
         } );
 
+        setRoomName( '' );
         onClose?.( {}, '' as never );
     };
 
