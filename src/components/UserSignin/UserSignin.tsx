@@ -11,7 +11,6 @@ import {
     , RadioGroup
     , TextField
     , Typography
-    , capitalize
 } from '@mui/material';
 
 // Types
@@ -20,11 +19,10 @@ import {
     , GameSettings
     , GameStep
 } from '../../types/types';
+import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
 
 // Utils
-import { GAME_LEVELS } from '../../utils/gameLevels';
 import { Socket } from 'socket.io-client';
-import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
 
 type Props = {
     numPlayers: number;
@@ -51,15 +49,11 @@ const UserSignin = ( {
     const buttonDisabled = gameLevelOrUsernameNotSelected || isDuplicateUsername;
 
     const continueToGame = () => {
-        if ( gameSettings.numPlayers === 2 ) {
-            socket?.emit(
-                'player-signed-in'
-                , { playerUsername: gameSettings.userName }
-            );
-            setGameStep( 'waiting' );
-        } else {
-            setGameStep( 'start' );
-        }
+        socket?.emit(
+            'player-signed-in'
+            , { playerUsername: gameSettings.userName }
+        );
+        setGameStep( 'level' );
     };
 
     return (
@@ -99,28 +93,6 @@ const UserSignin = ( {
                     label='2 Player'
                     control={ <Radio value={ 2 } /> }
                 />
-            </RadioGroup>
-            <Typography>
-                Please Choose Difficulty Level
-            </Typography>
-            <RadioGroup
-                value={ gameSettings.gameLevel?.level }
-                onChange={
-                    e => setGameSettings( settings => ( {
-                        ...settings
-                        , gameLevel: GAME_LEVELS[ e.target.value as keyof typeof GAME_LEVELS ]
-                    } ) )
-                }
-            >
-                {
-                    Object.entries( GAME_LEVELS ).map( ( [ levelName ] ) => (
-                        <FormControlLabel
-                            key={ levelName }
-                            label={ capitalize( levelName ) }
-                            control={ <Radio value={ levelName } /> }
-                        />
-                    ) )
-                }
             </RadioGroup>
             <Button
                 variant='contained'

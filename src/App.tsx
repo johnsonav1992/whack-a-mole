@@ -13,6 +13,7 @@ import UserSignin from './components/UserSignin/UserSignin';
 import WaitingRoom from './components/WaitingRoom/WaitingRoom';
 import GameScreen from './components/GameScreen/GameScreen';
 import ViewWrapper from './components/ViewWrapper/ViewWrapper';
+import LevelSelection from './components/LevelSelection/LevelSelection.tsx';
 
 // Hooks
 import { useTimer } from './hooks/useTimer';
@@ -107,6 +108,13 @@ function App () {
                     setGameStep={ setGameStep }
                     rooms={ rooms }
                     socket={ socket }
+                />
+            );
+            case 'level': return (
+                <LevelSelection
+                    gameSettings={ gameSettings }
+                    setGameSettings={ setGameSettings }
+                    setGameStep={ setGameStep }
                 />
             );
             case 'waiting': return (
