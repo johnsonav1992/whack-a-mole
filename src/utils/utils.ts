@@ -2,6 +2,8 @@ import {
     Dispatch
     , SetStateAction
 } from 'react';
+
+// Types
 import { GameRoom } from '../types/types';
 import { JoinOrLeaveRoomEvent } from '../../backend/types/socketEventTypes';
 

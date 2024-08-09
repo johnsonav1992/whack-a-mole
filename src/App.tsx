@@ -18,6 +18,7 @@ import LevelSelection from './components/LevelSelection/LevelSelection.tsx';
 // Hooks
 import { useTimer } from './hooks/useTimer';
 import { useFont } from './hooks/useFont';
+import { useSocket } from './hooks/useSocket';
 
 // Types
 import {
@@ -35,7 +36,6 @@ import whackAMoleFont from './assets/HelloWhackAMole.ttf';
 
 // Utils
 import { defaultGameSettings } from './utils/gameSettings';
-import { useSocket } from './hooks/useSocket';
 import {
     playerJoin
     , playerLeave

@@ -1,3 +1,8 @@
+import {
+    Dispatch
+    , SetStateAction
+} from 'react';
+
 // MUI
 import {
     Button
@@ -22,10 +27,8 @@ import {
 } from '../../types/types';
 import { Socket } from 'socket.io-client';
 import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
-import {
-    Dispatch
-    , SetStateAction
-} from 'react';
+
+// Utils
 import {
     playerJoin
     , playerLeave

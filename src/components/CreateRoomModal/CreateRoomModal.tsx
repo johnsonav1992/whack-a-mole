@@ -16,13 +16,13 @@ import {
     , Stack
     , TextField
 } from '@mui/material';
+import { Close } from '@mui/icons-material';
 
 // Types
 import {
     GameRoom
     , GameSettings
 } from '../../types/types';
-import { Close } from '@mui/icons-material';
 import { Socket } from 'socket.io-client';
 import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
 
