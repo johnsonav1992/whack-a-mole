@@ -41,19 +41,23 @@ const UserSignin = ( {
     , rooms
     , socket
 }: Props ) => {
-    const gameLevelOrUsernameNotSelected = !gameSettings.gameLevel || !gameSettings.userName;
+    const usernameNotSelected = !gameSettings.userName;
     const isDuplicateUsername
         = rooms.some( room => room.currentPlayers.some( player => player === gameSettings.userName ) )
         && gameSettings.numPlayers === 2;
 
-    const buttonDisabled = gameLevelOrUsernameNotSelected || isDuplicateUsername;
+    const buttonDisabled = usernameNotSelected || isDuplicateUsername;
 
     const continueToGame = () => {
-        socket?.emit(
-            'player-signed-in'
-            , { playerUsername: gameSettings.userName }
-        );
-        setGameStep( 'level' );
+        if ( gameSettings.numPlayers === 2 ) {
+            socket?.emit(
+                'player-signed-in'
+                , { playerUsername: gameSettings.userName }
+            );
+            setGameStep( 'waiting' );
+        } else {
+            setGameStep( 'level' );
+        }
     };
 
     return (

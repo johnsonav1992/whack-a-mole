@@ -122,6 +122,7 @@ function App () {
                     rooms={ rooms }
                     setRooms={ setRooms }
                     gameSettings={ gameSettings }
+                    setGameStep={ setGameStep }
                     socket={ socket }
                 />
             );

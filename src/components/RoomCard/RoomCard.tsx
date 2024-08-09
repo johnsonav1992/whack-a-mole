@@ -18,6 +18,7 @@ import {
 import {
     GameRoom
     , GameSettings
+    , GameStep
 } from '../../types/types';
 import { Socket } from 'socket.io-client';
 import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
@@ -34,6 +35,7 @@ type Props = {
     room: GameRoom;
     rooms: GameRoom[];
     gameSettings: GameSettings;
+    setGameStep: Dispatch<SetStateAction<GameStep>>;
     roomUserIsCurrentlyIn: GameRoom;
     socket: Socket<ClientToServerEvents> | null;
     setRooms: Dispatch<SetStateAction<GameRoom[]>>;
@@ -43,6 +45,7 @@ const RoomCard = ( {
     rooms
     , room
     , gameSettings
+    , setGameStep
     , roomUserIsCurrentlyIn
     , socket
     , setRooms
@@ -119,7 +122,13 @@ const RoomCard = ( {
                                                 direction='row'
                                                 gap='.75rem'
                                             >
-                                                <CheckCircle color='success' />
+                                                <CheckCircle
+                                                    color='success'
+                                                    sx={ {
+                                                        filter: theme =>
+                                                            `drop-shadow(0 0 7px ${ theme.palette.success.light })`
+                                                    } }
+                                                />
                                                 <Typography>
                                                     { player }
                                                 </Typography>
@@ -158,7 +167,11 @@ const RoomCard = ( {
                     <Button
                         variant='contained'
                         disabled={ ( roomIsFull && !userIsInRoom ) || userCannotJoinRoomBecauseTheyAreInAnotherRoom }
-                        onClick={ userIsInRoom ? () => {} : joinRoom }
+                        onClick={
+                            userIsInRoom
+                                ? () => setGameStep( 'level' )
+                                : joinRoom
+                        }
                     >
                         { userIsInRoom ? 'Start Game' : 'Join Room' }
                     </Button>

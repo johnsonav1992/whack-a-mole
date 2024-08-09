@@ -13,6 +13,7 @@ import {
     , Tooltip
     , Typography
 } from '@mui/material';
+import { Add } from '@mui/icons-material';
 
 // Components
 import RoomCard from '../RoomCard/RoomCard';
@@ -22,16 +23,18 @@ import CreateRoomModal from '../CreateRoomModal/CreateRoomModal';
 import {
     GameRoom
     , GameSettings
+    , GameStep
 } from '../../types/types';
+import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
+import { Socket } from 'socket.io-client';
 
 // Utils
 import { MAX_ROOMS } from '../../utils/gameSettings';
-import { Socket } from 'socket.io-client';
-import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
 
 type Props = {
     rooms: GameRoom[];
     setRooms: Dispatch<SetStateAction<GameRoom[]>>;
+    setGameStep: Dispatch<SetStateAction<GameStep>>;
     gameSettings: GameSettings;
     socket: Socket<ClientToServerEvents> | null;
 };
@@ -39,6 +42,7 @@ type Props = {
 const WaitingRoom = ( {
     rooms
     , setRooms
+    , setGameStep
     , gameSettings
     , socket
 }: Props ) => {
@@ -79,6 +83,7 @@ const WaitingRoom = ( {
                                     room={ room }
                                     rooms={ rooms }
                                     setRooms={ setRooms }
+                                    setGameStep={ setGameStep }
                                     gameSettings={ gameSettings }
                                     roomUserIsCurrentlyIn={ roomUserIsCurrentlyIn }
                                     socket={ socket }
@@ -99,6 +104,7 @@ const WaitingRoom = ( {
                     <Button
                         variant='contained'
                         disabled={ createButtonDisabled }
+                        startIcon={ <Add /> }
                         onClick={ () => setModalIsOpen( true ) }
                     >
                         Create Room
