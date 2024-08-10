@@ -47,7 +47,12 @@ const Board = ( {
 
         if ( !isPopped ) return;
 
+        // pause current sound execution to prep for the next one
+        whackSoundRef?.current?.pause();
+        whackSoundRef!.current!.currentTime = 0;
+
         whackSoundRef?.current?.play();
+
         toggleMole( idx, false );
         setScore( currScore => currScore + 1 );
     };

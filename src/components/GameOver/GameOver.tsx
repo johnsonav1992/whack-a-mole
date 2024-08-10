@@ -29,7 +29,7 @@ const GameOver = ( {
             </Typography>
             <Button
                 variant='contained'
-                onClick={ () => resetGame( 'players' ) }
+                onClick={ () => resetGame( 'level' ) }
                 size='large'
             >
                 Play Again!

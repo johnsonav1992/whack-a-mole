@@ -48,16 +48,17 @@ const UserSignin = ( {
 
     const buttonDisabled = usernameNotSelected || isDuplicateUsername;
 
-    const continueToGame = () => {
+    const continueToNext = () => {
         if ( gameSettings.numPlayers === 2 ) {
-            socket?.emit(
-                'player-signed-in'
-                , { playerUsername: gameSettings.userName }
-            );
             setGameStep( 'waiting' );
         } else {
             setGameStep( 'level' );
         }
+
+        socket?.emit(
+            'player-signed-in'
+            , { playerUsername: gameSettings.userName }
+        );
     };
 
     return (
@@ -100,7 +101,7 @@ const UserSignin = ( {
             </RadioGroup>
             <Button
                 variant='contained'
-                onClick={ continueToGame }
+                onClick={ continueToNext }
                 disabled={ buttonDisabled }
             >
                 Continue

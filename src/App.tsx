@@ -146,12 +146,17 @@ function App () {
 
     return (
         <ViewWrapper>
-            <Typography
-                fontFamily='Whack-A-Mole'
-                variant='h1'
-            >
-                Whack-A-Mole!
-            </Typography>
+            {
+                gameStep !== 'finished'
+                && (
+                    <Typography
+                        fontFamily='Whack-A-Mole'
+                        variant='h1'
+                    >
+                        Whack-A-Mole!
+                    </Typography>
+                )
+            }
             <Typography
                 variant='body2'
                 sx={ {
