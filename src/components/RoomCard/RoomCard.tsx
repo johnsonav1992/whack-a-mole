@@ -87,6 +87,11 @@ const RoomCard = ( {
         } );
     };
 
+    const continueToLevel = () => {
+        socket?.emit( 'level-select-initiated', { roomName: room.name } );
+        setGameStep( 'level' );
+    };
+
     return (
         <Card
             sx={ {
@@ -172,11 +177,11 @@ const RoomCard = ( {
                         disabled={ ( roomIsFull && !userIsInRoom ) || userCannotJoinRoomBecauseTheyAreInAnotherRoom }
                         onClick={
                             userIsInRoom
-                                ? () => setGameStep( 'level' )
+                                ? continueToLevel
                                 : joinRoom
                         }
                     >
-                        { userIsInRoom ? 'Start Game' : 'Join Room' }
+                        { userIsInRoom ? 'Continue' : 'Join Room' }
                     </Button>
                 </Stack>
             </Tooltip>

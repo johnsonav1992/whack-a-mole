@@ -49,3 +49,7 @@ export const userLeave = (socket: WhackAMoleSocket) => {
         io.emit('user-leave', { userName: user as string })
     })
 }
+
+export const levelSelectInitiated = (socket: WhackAMoleSocket) => {
+    socket.on('level-select-initiated', e => socket.to(e.roomName).emit('level-select-initiated', e))
+}

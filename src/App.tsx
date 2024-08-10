@@ -19,6 +19,7 @@ import LevelSelection from './components/LevelSelection/LevelSelection.tsx';
 import { useTimer } from './hooks/useTimer';
 import { useFont } from './hooks/useFont';
 import { useSocket } from './hooks/useSocket';
+import { useLatest } from './hooks/useLatest.ts';
 
 // Types
 import {
@@ -48,6 +49,9 @@ function App () {
     const [ rooms, setRooms ] = useState<GameRoom[]>( [] );
     const [ signedInPlayers, setSignedInPlayers ] = useState<string[]>( [] );
 
+    const currRooms = useLatest( rooms );
+    const currGameSettings = useLatest( gameSettings );
+
     useFont( 'Whack-A-Mole', whackAMoleFont );
 
     const { socket } = useSocket<
@@ -71,6 +75,15 @@ function App () {
             }
             , 'user-leave': e => {
                 setSignedInPlayers( players => players.filter( player => player !== e.userName ) );
+            }
+            , 'level-select-initiated': e => {
+                const usersCurrentRoom = currRooms.current.find(
+                    rm => rm.currentPlayers.includes( currGameSettings.current.userName )
+                );
+
+                if ( e.roomName === usersCurrentRoom?.name ) {
+                    setGameStep( 'level' );
+                }
             }
         }
     } );
