@@ -1,3 +1,9 @@
+import {
+    ClientToServerEvents
+    , ServerToClientEvents
+} from '../../backend/types/socketEventTypes';
+import { useSocket } from '../hooks/useSocket';
+
 export type Mole = {
     image: `${ string }mole-${ 'hole' | 'pop' }.png`;
     isPopped: boolean;
@@ -42,3 +48,5 @@ export type GameRoom = {
     name: string;
     currentPlayers: Players;
 };
+
+export type UseSocketRegisterEvent = ReturnType<typeof useSocket<ServerToClientEvents, ClientToServerEvents>>['registerEvent'];

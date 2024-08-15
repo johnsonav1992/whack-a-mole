@@ -11,13 +11,17 @@ import ScoreBoard from '../ScoreBoard/ScoreBoard';
 import Board from '../Board/Board';
 
 // Types
-import { GameSettings } from '../../types/types';
+import {
+    GameSettings
+    , UseSocketRegisterEvent
+} from '../../types/types';
 
 type Props = {
     score: number;
     setScore: Dispatch<SetStateAction<number>>;
     remainingTime: number | null;
     gameSettings: GameSettings;
+    registerEvent: UseSocketRegisterEvent;
 };
 
 const GameScreen = ( {
@@ -25,7 +29,12 @@ const GameScreen = ( {
     , setScore
     , remainingTime
     , gameSettings
+    , registerEvent
 }: Props ) => {
+    registerEvent( 'player-action', e => {
+        console.log( e );
+    } );
+
     return (
         remainingTime
         && gameSettings.gameLevel

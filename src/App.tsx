@@ -54,7 +54,10 @@ function App () {
 
     useFont( 'Whack-A-Mole', whackAMoleFont );
 
-    const { socket } = useSocket<
+    const {
+        socket
+        , registerEvent
+    } = useSocket<
         ServerToClientEvents
         , ClientToServerEvents
     >( {
@@ -145,6 +148,7 @@ function App () {
                     remainingTime={ remainingTime }
                     score={ score }
                     setScore={ setScore }
+                    registerEvent={ registerEvent }
                 />
             );
         }

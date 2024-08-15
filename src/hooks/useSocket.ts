@@ -1,5 +1,6 @@
 import {
-    useEffect
+    useCallback
+    , useEffect
     , useRef
     , useState
 } from 'react';
@@ -47,8 +48,8 @@ type UseSocketParams<L extends DefaultEventsMap> = {
  *
  */
 export const useSocket = <
-    ListenEvents extends DefaultEventsMap = DefaultEventsMap
-    , EmitEvents extends DefaultEventsMap = DefaultEventsMap
+    ListenEvents extends DefaultEventsMap = DefaultEventsMap,
+    EmitEvents extends DefaultEventsMap = DefaultEventsMap
 >( params?: UseSocketParams<ListenEvents> ) => {
     const enabled = params?.enabled ?? true;
 
@@ -63,8 +64,8 @@ export const useSocket = <
         const URL = `${ params?.url || DEFAULT_URL }${ params?.namespace || '' }`;
 
         const socket: Socket<ListenEvents, EmitEvents> = io(
-            URL
-            , {
+            URL,
+            {
                 ...DEFAULT_OPTIONS
                 , ...params?.options
                 , query: { ...params?.options?.query }
@@ -90,26 +91,40 @@ export const useSocket = <
         socketRef.current?.on( 'disconnect', onDisconnect );
         socketRef.current?.on( 'connect_error', onConnectError );
 
-        params?.listenEvents && Object.entries( params.listenEvents ).forEach(
-            ( [ eventName, callback ] ) => {
+        params?.listenEvents
+            && Object.entries( params.listenEvents ).forEach( ( [ eventName, callback ] ) => {
                 socketRef.current?.on( eventName, callback as never );
-            }
-        );
+            } );
 
         return () => {
             socketRef.current?.off( 'connect', onConnect );
             socketRef.current?.off( 'disconnect', onDisconnect );
             socketRef.current?.off( 'connect_error', onConnectError );
 
-            params?.listenEvents && Object.entries( params.listenEvents ).forEach(
-                ( [ eventName, callback ] ) => socketRef.current?.off( eventName, callback as never )
-            );
+            params?.listenEvents
+                && Object.entries( params.listenEvents ).forEach( ( [ eventName, callback ] ) =>
+                    socketRef.current?.off( eventName, callback as never )
+                );
         };
     }, [] );
+
+    const registerEvent = useCallback(
+        <EventName extends keyof ListenEvents>( eventName: EventName, callback: ListenEvents[EventName] ) => {
+            if ( socketRef.current ) {
+                socketRef.current?.on( eventName as string, callback as never );
+
+                return () => {
+                    socketRef.current?.off( eventName as string, callback as never );
+                };
+            }
+        },
+        []
+    );
 
     return {
         socket: socketRef.current
         , isConnected
         , connectError
+        , registerEvent
     };
 };
