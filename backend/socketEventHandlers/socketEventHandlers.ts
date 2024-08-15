@@ -53,3 +53,10 @@ export const userLeave = (socket: WhackAMoleSocket) => {
 export const levelSelectInitiated = (socket: WhackAMoleSocket) => {
     socket.on('level-select-initiated', e => socket.to(e.roomName).emit('level-select-initiated', e))
 }
+
+export const playerAction = (socket: WhackAMoleSocket) => {
+    socket.on('player-action', e => {
+        console.log(`Player ${e.playerName} - ${e.actionPayload}`)
+        socket.to(e.roomName).emit('player-action', e)
+    })
+}

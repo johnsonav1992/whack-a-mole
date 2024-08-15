@@ -10,17 +10,10 @@ export type ClientToServerEvents = {
     'player-action': PlayerActionEvent;
 };
 
-export type ServerToClientEvents = Partial<{
-    'player-signed-in': SignInEvent;
+export type ServerToClientEvents = Partial<ClientToServerEvents & {
     'load-current-players': ( params: { currentPlayers: string[] } ) => void;
     'load-current-rooms': ( params: { currentRooms: GameRoom[] } ) => void;
-    'mole-whacked': WhackEvent;
-    'player-whack-attempt': WhackEvent;
-    'join-room': JoinOrLeaveRoomEvent;
-    'leave-room': JoinOrLeaveRoomEvent;
     'user-leave': ( params: { userName: string } ) => void;
-    'level-select-initiated': LevelSelectInitiatedEvent;
-    'player-action': PlayerActionEvent;
 }>;
 
 type WhackEvent = ( params: { moleIndex: number; playerId: number } ) => void;

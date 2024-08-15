@@ -6,7 +6,7 @@ import {
     ClientToServerEvents
     , ServerToClientEvents 
 } from './types/socketEventTypes.js'
-import { joinRoom, leaveRoom, levelSelectInitiated, moleWhacked, userLeave, userSignedIn } from "./socketEventHandlers/socketEventHandlers.ts";
+import { joinRoom, leaveRoom, levelSelectInitiated, moleWhacked, playerAction, userLeave, userSignedIn } from "./socketEventHandlers/socketEventHandlers.ts";
 import { getRoomsAndPlayers, registerHandlers } from "./utils/utils.ts";
 
 const PORT = 8000;
@@ -22,7 +22,7 @@ console.log("Whack-A-Mole Socket Server up and running on", PORT )
 io.on( "connection", socket => {
     console.log('New socket connected:', socket.id) ;
 
-    // Init data send on connect
+    // Init data sent on connection of new socket
     console.log('loading current user count - ', activeUsers.size)
     socket.emit('load-current-players', { currentPlayers: Array.from(activeUsers.values()) } )
 
@@ -38,7 +38,8 @@ io.on( "connection", socket => {
         leaveRoom,
         moleWhacked,
         userLeave,
-        levelSelectInitiated
+        levelSelectInitiated,
+        playerAction
     )
 } );
 
