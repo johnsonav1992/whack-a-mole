@@ -111,7 +111,10 @@ export const useSocket = <
 
     // For registering remote listeners (not set in the main useSocket call)
     useEffect( () => {
-        const listeners = remoteListeners.current.entries();
+        const listeners = Array.from( remoteListeners.current.entries() );
+
+        if ( !listeners.length ) return;
+
         for ( const [ eventName, callback ] of listeners ) {
             if ( socketRef.current?.hasListeners( eventName as string ) ) continue;
 
