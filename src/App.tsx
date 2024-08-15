@@ -59,20 +59,13 @@ function App () {
         , ClientToServerEvents
     >( {
         listenEvents: {
-            'load-current-players': e => {
-                setSignedInPlayers( e.currentPlayers );
-            }
-            , 'load-current-rooms': e => {
-                setRooms( e.currentRooms );
-            }
+            'load-current-players': e => setSignedInPlayers( e.currentPlayers )
+            , 'load-current-rooms': e => setRooms( e.currentRooms )
             , 'player-signed-in': e => {
                 setSignedInPlayers( players => [ ...players, e.playerUsername ] );
             }
             , 'join-room': e => playerJoin( e, setRooms )
-            , 'leave-room': e => {
-                console.log( e );
-                playerLeave( e.userName, setRooms );
-            }
+            , 'leave-room': e => playerLeave( e.userName, setRooms )
             , 'user-leave': e => {
                 setSignedInPlayers( players => players.filter( player => player !== e.userName ) );
             }
