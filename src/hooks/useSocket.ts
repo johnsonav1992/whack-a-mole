@@ -54,6 +54,7 @@ export const useSocket = <
     const enabled = params?.enabled ?? true;
 
     const socketRef = useRef<Socket<ListenEvents, EmitEvents> | null>( null );
+    const remoteListeners = useRef<Map<keyof ListenEvents, ListenEvents[keyof ListenEvents]>>( new Map() );
 
     const [ isConnected, setIsConnected ] = useState<boolean>( false );
     const [ connectError, setConnectError ] = useState<string | null>( null );
@@ -108,15 +109,25 @@ export const useSocket = <
         };
     }, [] );
 
+    // For registering remote listeners (not set in the main useSocket call)
+    useEffect( () => {
+        const listeners = remoteListeners.current.entries();
+        for ( const [ eventName, callback ] of listeners ) {
+            if ( socketRef.current?.hasListeners( eventName as string ) ) continue;
+
+            socketRef.current?.on( eventName as string, callback as never );
+        }
+
+        return () => {
+            for ( const [ eventName, callback ] of listeners ) {
+                socketRef.current?.off( eventName as string, callback as never );
+            }
+        };
+    }, [ remoteListeners.current ] );
+
     const registerEvent = useCallback(
         <EventName extends keyof ListenEvents>( eventName: EventName, callback: ListenEvents[EventName] ) => {
-            if ( socketRef.current ) {
-                socketRef.current?.on( eventName as string, callback as never );
-
-                return () => {
-                    socketRef.current?.off( eventName as string, callback as never );
-                };
-            }
+            remoteListeners.current.set( eventName, callback );
         },
         []
     );
