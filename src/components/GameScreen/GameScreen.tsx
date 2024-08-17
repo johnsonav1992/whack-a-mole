@@ -1,8 +1,3 @@
-import {
-    Dispatch
-    , SetStateAction
-} from 'react';
-
 // MUI
 import { Stack } from '@mui/material';
 
@@ -15,7 +10,6 @@ import {
     GameSettings
     , UseSocketRegisterEvent
 } from '../../types/types';
-import { useScore } from '../../state/atoms';
 
 type Props = {
     remainingTime: number | null;
@@ -28,7 +22,6 @@ const GameScreen = ( {
     , gameSettings
     , registerEvent
 }: Props ) => {
-    const [ score, setScore ] = useScore();
 
     registerEvent( 'player-action', e => {
         console.log( e );
@@ -40,12 +33,8 @@ const GameScreen = ( {
         && (
             <>
                 <Stack>
-                    <ScoreBoard
-                        score={ score }
-                        remainingTime={ remainingTime }
-                    />
+                    <ScoreBoard remainingTime={ remainingTime } />
                     <Board
-                        setScore={ setScore }
                         remainingTime={ remainingTime }
                         gameLevel={ gameSettings.gameLevel }
                     />

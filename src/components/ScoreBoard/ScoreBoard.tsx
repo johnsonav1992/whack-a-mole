@@ -3,16 +3,15 @@ import {
     Paper
     , Typography
 } from '@mui/material';
+import { useScore } from '../../state/atoms';
 
 type Props = {
-    score: number;
     remainingTime: number;
 };
 
-const ScoreBoard = ( {
-    score
-    , remainingTime
-}: Props ) => {
+const ScoreBoard = ( { remainingTime }: Props ) => {
+    const score = useScore( 'value' );
+
     return (
         <Paper
             sx={ {

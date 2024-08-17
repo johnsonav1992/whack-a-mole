@@ -1,7 +1,5 @@
 import {
-    Dispatch
-    , ElementRef
-    , SetStateAction
+    ElementRef
     , useEffect
     , useRef
     , useState
@@ -24,18 +22,18 @@ import {
     getNextMoleToPop
     , getRandomTimeWithinRange
 } from '../../utils/utils';
+import { useScore } from '../../state/atoms';
 
 type Props = {
-    setScore: Dispatch<SetStateAction<number>>;
     remainingTime: number;
     gameLevel: GameLevel;
 };
 
 const Board = ( {
-    setScore
-    , remainingTime
+    remainingTime
     , gameLevel
 }: Props ) => {
+    const setScore = useScore( 'set' );
     const [ moles, setMoles ] = useState<boolean[]>( Array( 16 ).fill( false ) );
     const [ cursor, setCursor ] = useState<'up' | 'whack'>( 'up' );
 

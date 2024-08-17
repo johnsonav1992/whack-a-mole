@@ -15,7 +15,7 @@ type Props = {
 const GameOver = ( {
     resetGame
 }: Props ) => {
-    const [ score, _ ] = useScore();
+    const score = useScore( 'value' );
 
     return (
         <>
