@@ -42,8 +42,11 @@ import {
     , playerLeave
 } from './utils/utils.ts';
 
+// Hooks
+import { useScore } from './state/atoms.ts';
+
 function App () {
-    const [ score, setScore ] = useState( 0 );
+    const setScore = useScore( 'set' );
     const [ gameSettings, setGameSettings ] = useState<GameSettings>( defaultGameSettings );
     const [ gameStep, setGameStep ] = useState<GameStep>( 'players' );
     const [ rooms, setRooms ] = useState<GameRoom[]>( [] );
@@ -136,18 +139,11 @@ function App () {
                 />
             );
             case 'start': return <GameStart resetGame={ resetGame } />;
-            case 'finished': return (
-                <GameOver
-                    score={ score }
-                    resetGame={ resetGame }
-                />
-            );
+            case 'finished': return <GameOver resetGame={ resetGame } />;
             case 'active': return (
                 <GameScreen
                     gameSettings={ gameSettings }
                     remainingTime={ remainingTime }
-                    score={ score }
-                    setScore={ setScore }
                     registerEvent={ registerEvent }
                 />
             );

@@ -15,22 +15,21 @@ import {
     GameSettings
     , UseSocketRegisterEvent
 } from '../../types/types';
+import { useScore } from '../../state/atoms';
 
 type Props = {
-    score: number;
-    setScore: Dispatch<SetStateAction<number>>;
     remainingTime: number | null;
     gameSettings: GameSettings;
     registerEvent: UseSocketRegisterEvent;
 };
 
 const GameScreen = ( {
-    score
-    , setScore
-    , remainingTime
+    remainingTime
     , gameSettings
     , registerEvent
 }: Props ) => {
+    const [ score, setScore ] = useScore();
+
     registerEvent( 'player-action', e => {
         console.log( e );
     } );
