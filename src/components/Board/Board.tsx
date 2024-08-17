@@ -6,7 +6,10 @@ import {
 } from 'react';
 
 // MUI
-import { Card } from '@mui/material';
+import {
+    Box
+    , Card
+} from '@mui/material';
 
 // Components
 import Mole from '../Mole/Mole';
@@ -37,6 +40,7 @@ const Board = ( {
     const [ moles, setMoles ] = useState<boolean[]>( Array( 16 ).fill( false ) );
     const [ cursor, setCursor ] = useState<'up' | 'whack'>( 'up' );
 
+    const boardRef = useRef<ElementRef<typeof Card>>( null );
     const whackSoundRef = useRef<ElementRef<'audio'>>( null );
 
     const whack = ( idx: number, isPopped: boolean ) => {
@@ -65,9 +69,7 @@ const Board = ( {
     };
 
     useEffect( () => {
-        document.addEventListener( 'contextmenu', event => {
-            event.preventDefault();
-        } );
+        boardRef.current?.addEventListener( 'contextmenu', e => e.preventDefault() );
     }, [] );
 
     useEffect( () => {
@@ -94,32 +96,34 @@ const Board = ( {
     }, [ moles ] );
 
     return (
-        <Card
-            elevation={ 4 }
-            sx={ {
-                width: 500
-                , display: 'flex'
-                , justifyContent: 'space-between'
-                , gap: '.5rem'
-                , flexWrap: 'wrap'
-                , aspectRatio: 1
-                , backgroundColor: theme => theme.palette.primary.main
-                , padding: '1.5rem'
-                , cursor: `url('${ cursor === 'whack' ? hammerHit : hammerUp }') 64 32, auto`
-            } }
-        >
-            {
-                moles.map( ( isPopped, i ) => (
-                    <Mole
-                        key={ i }
-                        moleIndex={ i }
-                        isPopped={ isPopped }
-                        hammerHit={ whack }
-                    />
-                ) )
-            }
-            <WhackSound audioRef={ whackSoundRef } />
-        </Card>
+        <Box ref={ boardRef }>
+            <Card
+                elevation={ 4 }
+                sx={ {
+                    width: 500
+                    , display: 'flex'
+                    , justifyContent: 'space-between'
+                    , gap: '.5rem'
+                    , flexWrap: 'wrap'
+                    , aspectRatio: 1
+                    , backgroundColor: theme => theme.palette.primary.main
+                    , padding: '1.5rem'
+                    , cursor: `url('${ cursor === 'whack' ? hammerHit : hammerUp }') 64 32, auto`
+                } }
+            >
+                {
+                    moles.map( ( isPopped, i ) => (
+                        <Mole
+                            key={ i }
+                            moleIndex={ i }
+                            isPopped={ isPopped }
+                            hammerHit={ whack }
+                        />
+                    ) )
+                }
+                <WhackSound audioRef={ whackSoundRef } />
+            </Card>
+        </Box>
     );
 };
 
