@@ -1,8 +1,3 @@
-import {
-    Dispatch
-    , SetStateAction
-} from 'react';
-
 // MUI
 import {
     Button
@@ -14,33 +9,32 @@ import {
 } from '@mui/material';
 
 // Types
-import {
-    GameRoom
-    , GameSettings
-    , GameStep
-} from '../../types/types';
 import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
 
 // Utils
 import { Socket } from 'socket.io-client';
 
+// Hooks
+import {
+    useGameSettings
+    , useGameStep
+    , useRooms
+} from '../../state/atoms';
+
 type Props = {
     numPlayers: number;
-    gameSettings: GameSettings;
-    setGameSettings: Dispatch<SetStateAction<GameSettings>>;
-    setGameStep: Dispatch<SetStateAction<GameStep>>;
-    rooms: GameRoom[];
     socket: Socket<ClientToServerEvents> | null;
 };
 
 const UserSignin = ( {
     numPlayers
-    , gameSettings
-    , setGameSettings
-    , setGameStep
-    , rooms
     , socket
 }: Props ) => {
+    const rooms = useRooms( 'value' );
+    const gameSettings = useGameSettings( 'value' );
+    const setGameSettings = useGameSettings( 'set' );
+    const setGameStep = useGameStep( 'set' );
+
     const usernameNotSelected = !gameSettings.userName;
     const isDuplicateUsername
         = rooms.some( room => room.currentPlayers.some( player => player === gameSettings.userName ) )

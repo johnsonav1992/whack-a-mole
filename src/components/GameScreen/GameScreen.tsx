@@ -6,22 +6,21 @@ import ScoreBoard from '../ScoreBoard/ScoreBoard';
 import Board from '../Board/Board';
 
 // Types
-import {
-    GameSettings
-    , UseSocketRegisterEvent
-} from '../../types/types';
+import { UseSocketRegisterEvent } from '../../types/types';
+
+// Hooks
+import { useGameSettings } from '../../state/atoms';
 
 type Props = {
     remainingTime: number | null;
-    gameSettings: GameSettings;
     registerEvent: UseSocketRegisterEvent;
 };
 
 const GameScreen = ( {
     remainingTime
-    , gameSettings
     , registerEvent
 }: Props ) => {
+    const gameSettings = useGameSettings( 'value' );
 
     registerEvent( 'player-action', e => {
         console.log( e );

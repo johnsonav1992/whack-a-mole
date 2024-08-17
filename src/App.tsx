@@ -1,7 +1,4 @@
-import {
-    useEffect
-    , useState
-} from 'react';
+import { useEffect } from 'react';
 
 // MUI
 import { Typography } from '@mui/material';
@@ -22,11 +19,7 @@ import { useSocket } from './hooks/useSocket';
 import { useLatest } from './hooks/useLatest.ts';
 
 // Types
-import {
-    GameRoom
-    , GameSettings
-    , GameStep
-} from './types/types';
+import { GameStep } from './types/types';
 import {
     ClientToServerEvents
     , ServerToClientEvents
@@ -43,14 +36,20 @@ import {
 } from './utils/utils.ts';
 
 // Hooks
-import { useScore } from './state/atoms.ts';
+import {
+    useGameSettings
+    , useGameStep
+    , useRooms
+    , useScore
+    , useSignedInPlayers
+} from './state/atoms.ts';
 
 function App () {
     const setScore = useScore( 'set' );
-    const [ gameSettings, setGameSettings ] = useState<GameSettings>( defaultGameSettings );
-    const [ gameStep, setGameStep ] = useState<GameStep>( 'players' );
-    const [ rooms, setRooms ] = useState<GameRoom[]>( [] );
-    const [ signedInPlayers, setSignedInPlayers ] = useState<string[]>( [] );
+    const [ gameSettings, setGameSettings ] = useGameSettings( 'norm' );
+    const [ gameStep, setGameStep ] = useGameStep( 'norm' );
+    const [ rooms, setRooms ] = useRooms( 'norm' );
+    const [ signedInPlayers, setSignedInPlayers ] = useSignedInPlayers( 'norm' );
 
     const currRooms = useLatest( rooms );
     const currGameSettings = useLatest( gameSettings );
@@ -115,34 +114,15 @@ function App () {
             case 'players': return (
                 <UserSignin
                     numPlayers={ gameSettings.numPlayers }
-                    gameSettings={ gameSettings }
-                    setGameSettings={ setGameSettings }
-                    setGameStep={ setGameStep }
-                    rooms={ rooms }
                     socket={ socket }
                 />
             );
-            case 'level': return (
-                <LevelSelection
-                    gameSettings={ gameSettings }
-                    setGameSettings={ setGameSettings }
-                    setGameStep={ setGameStep }
-                />
-            );
-            case 'waiting': return (
-                <WaitingRoom
-                    rooms={ rooms }
-                    setRooms={ setRooms }
-                    gameSettings={ gameSettings }
-                    setGameStep={ setGameStep }
-                    socket={ socket }
-                />
-            );
+            case 'level': return <LevelSelection />;
+            case 'waiting': return <WaitingRoom socket={ socket } />;
             case 'start': return <GameStart resetGame={ resetGame } />;
             case 'finished': return <GameOver resetGame={ resetGame } />;
             case 'active': return (
                 <GameScreen
-                    gameSettings={ gameSettings }
                     remainingTime={ remainingTime }
                     registerEvent={ registerEvent }
                 />

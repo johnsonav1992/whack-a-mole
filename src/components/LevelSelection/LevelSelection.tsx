@@ -1,8 +1,3 @@
-import {
-    Dispatch
-    , SetStateAction
-} from 'react';
-
 // MUI
 import {
     Button
@@ -16,23 +11,15 @@ import {
 // Utils
 import { GAME_LEVELS } from '../../utils/gameLevels';
 
-// Types
+// Hooks
 import {
-    GameSettings
-    , GameStep
-} from '../../types/types';
+    useGameSettings
+    , useGameStep
+} from '../../state/atoms';
 
-type Props = {
-    gameSettings: GameSettings;
-    setGameSettings: Dispatch<SetStateAction<GameSettings>>;
-    setGameStep: Dispatch<SetStateAction<GameStep>>;
-};
-
-const LevelSelection = ( {
-    gameSettings
-    , setGameSettings
-    , setGameStep
-}: Props ) => {
+const LevelSelection = () => {
+    const [ gameSettings, setGameSettings ] = useGameSettings( 'norm' );
+    const setGameStep = useGameStep( 'set' );
 
     const continueToGame = () => {
         if ( gameSettings.numPlayers === 2 ) {

@@ -1,8 +1,4 @@
-import {
-    Dispatch
-    , SetStateAction
-    , useState
-} from 'react';
+import { useState } from 'react';
 
 // MUI
 import {
@@ -20,32 +16,30 @@ import RoomCard from '../RoomCard/RoomCard';
 import CreateRoomModal from '../CreateRoomModal/CreateRoomModal';
 
 // Types
-import {
-    GameRoom
-    , GameSettings
-    , GameStep
-} from '../../types/types';
 import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
 import { Socket } from 'socket.io-client';
 
 // Utils
 import { MAX_ROOMS } from '../../utils/gameSettings';
 
+// Hooks
+import {
+    useGameSettings
+    , useGameStep
+    , useRooms
+} from '../../state/atoms';
+
 type Props = {
-    rooms: GameRoom[];
-    setRooms: Dispatch<SetStateAction<GameRoom[]>>;
-    setGameStep: Dispatch<SetStateAction<GameStep>>;
-    gameSettings: GameSettings;
     socket: Socket<ClientToServerEvents> | null;
 };
 
 const WaitingRoom = ( {
-    rooms
-    , setRooms
-    , setGameStep
-    , gameSettings
-    , socket
+    socket
 }: Props ) => {
+    const [ rooms, setRooms ] = useRooms( 'norm' );
+    const gameSettings = useGameSettings( 'value' );
+    const setGameStep = useGameStep( 'set' );
+
     const [ modalIsOpen, setModalIsOpen ] = useState( false );
 
     const roomUserIsCurrentlyIn = rooms.filter( room => room.currentPlayers.includes( gameSettings.userName ) )[ 0 ];
