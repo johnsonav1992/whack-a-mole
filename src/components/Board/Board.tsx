@@ -25,6 +25,8 @@ import {
     getNextMoleToPop
     , getRandomTimeWithinRange
 } from '../../utils/utils';
+
+// Hooks
 import { useScore } from '../../state/atoms';
 
 type Props = {
