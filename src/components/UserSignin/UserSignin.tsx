@@ -8,28 +8,22 @@ import {
     , Typography
 } from '@mui/material';
 
-// Types
-import { ClientToServerEvents } from '../../../backend/types/socketEventTypes';
-
-// Utils
-import { Socket } from 'socket.io-client';
-
 // Hooks
 import {
     useGameSettings
     , useGameStep
     , useRooms
+    , useSocketAtom
 } from '../../state/atoms';
 
 type Props = {
     numPlayers: number;
-    socket: Socket<ClientToServerEvents> | null;
 };
 
 const UserSignin = ( {
     numPlayers
-    , socket
 }: Props ) => {
+    const socket = useSocketAtom( 'value' );
     const rooms = useRooms( 'value' );
     const gameSettings = useGameSettings( 'value' );
     const setGameSettings = useGameSettings( 'set' );

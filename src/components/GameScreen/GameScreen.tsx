@@ -9,7 +9,10 @@ import Board from '../Board/Board';
 import { UseSocketRegisterEvent } from '../../types/types';
 
 // Hooks
-import { useGameSettings } from '../../state/atoms';
+import {
+    useGameSettings
+    , useSocketAtom
+} from '../../state/atoms';
 
 type Props = {
     remainingTime: number | null;
@@ -20,11 +23,14 @@ const GameScreen = ( {
     remainingTime
     , registerEvent
 }: Props ) => {
+    const socket = useSocketAtom( 'value' );
     const gameSettings = useGameSettings( 'value' );
 
-    registerEvent( 'player-action', e => {
-        console.log( e );
-    } );
+    if ( !socket?.listeners( 'player-action' ).length ) {
+        registerEvent( 'player-action', e => {
+            console.log( e );
+        } );
+    }
 
     return (
         remainingTime

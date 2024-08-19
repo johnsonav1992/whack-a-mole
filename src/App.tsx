@@ -111,12 +111,7 @@ function App () {
 
     const renderView = () => {
         switch ( gameStep ) {
-            case 'players': return (
-                <UserSignin
-                    numPlayers={ gameSettings.numPlayers }
-                    socket={ socket }
-                />
-            );
+            case 'players': return <UserSignin numPlayers={ gameSettings.numPlayers } />;
             case 'level': return <LevelSelection />;
             case 'waiting': return <WaitingRoom socket={ socket } />;
             case 'start': return <GameStart resetGame={ resetGame } />;

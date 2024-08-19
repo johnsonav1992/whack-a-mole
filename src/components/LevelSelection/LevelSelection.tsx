@@ -22,11 +22,7 @@ const LevelSelection = () => {
     const setGameStep = useGameStep( 'set' );
 
     const continueToGame = () => {
-        if ( gameSettings.numPlayers === 2 ) {
-            setGameStep( 'waiting' );
-        } else {
-            setGameStep( 'start' );
-        }
+        setGameStep( 'start' );
     };
 
     return (
