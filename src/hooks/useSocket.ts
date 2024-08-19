@@ -112,12 +112,10 @@ export const useSocket = <
     // For registering remote listeners (not set in the main useSocket call)
     useEffect( () => {
         const listeners = Array.from( remoteListeners.current.entries() );
-        console.log( { listeners } );
 
         if ( !listeners.length ) return;
 
         for ( const [ eventName, callback ] of listeners ) {
-            console.log( 'has listener', eventName, socketRef.current?.hasListeners( eventName as string ) );
             if ( socketRef.current?.hasListeners( eventName as string ) ) continue;
 
             socketRef.current?.on( eventName as string, callback as never );
@@ -132,7 +130,6 @@ export const useSocket = <
 
     const registerEvent = useCallback(
         <EventName extends keyof ListenEvents>( eventName: EventName, callback: ListenEvents[EventName] ) => {
-            console.log( 'registerEvent fired' );
             remoteListeners.current.set( eventName, callback );
         },
         []
