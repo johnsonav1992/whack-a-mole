@@ -1,7 +1,14 @@
-import { useEffect } from 'react';
+import {
+    useEffect
+    , useState
+} from 'react';
 
 // MUI
-import { Typography } from '@mui/material';
+import {
+    Alert
+    , Snackbar
+    , Typography
+} from '@mui/material';
 
 // Components
 import GameOver from './components/GameOver/GameOver';
@@ -42,14 +49,18 @@ import {
     , useRooms
     , useScore
     , useSignedInPlayers
+    , useSocketAtom
 } from './state/atoms.ts';
 
 function App () {
     const setScore = useScore( 'set' );
+    // const [ storedSocket, setStoredSocket ] = useSocketAtom( 'norm' );
     const [ gameSettings, setGameSettings ] = useGameSettings( 'norm' );
     const [ gameStep, setGameStep ] = useGameStep( 'norm' );
     const [ rooms, setRooms ] = useRooms( 'norm' );
     const [ signedInPlayers, setSignedInPlayers ] = useSignedInPlayers( 'norm' );
+
+    const [ connectErrorShow, setConnectErrorShow ] = useState( false );
 
     const currRooms = useLatest( rooms );
     const currGameSettings = useLatest( gameSettings );
@@ -59,6 +70,7 @@ function App () {
     const {
         socket
         , registerEvent
+        , connectError
     } = useSocket<
         ServerToClientEvents
         , ClientToServerEvents
@@ -85,6 +97,16 @@ function App () {
             }
         }
     } );
+
+    useEffect( () => {
+        if ( connectError && !connectErrorShow ) {
+            setConnectErrorShow( true );
+        }
+    }, [ connectError, connectErrorShow ] );
+
+    // if ( socket && !storedSocket ) {
+    //     setStoredSocket( socket );
+    // }
 
     const {
         remainingTime
@@ -150,6 +172,19 @@ function App () {
                 { `Currently Signed-In Players: ${ signedInPlayers.length }` }
             </Typography>
             { renderView() }
+            <Snackbar
+                open={ connectErrorShow }
+                autoHideDuration={ 2000 }
+            >
+                <Alert
+                    severity='error'
+                    variant='filled'
+                    sx={ { width: '100%' } }
+                    onClose={ () => setConnectErrorShow( false ) }
+                >
+                    There was an error connecting to the server
+                </Alert>
+            </Snackbar>
         </ViewWrapper>
     );
 }
