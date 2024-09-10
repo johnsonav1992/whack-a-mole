@@ -56,7 +56,8 @@ export const levelSelectInitiated = (socket: WhackAMoleSocket) => {
 
 export const playerAction = (socket: WhackAMoleSocket) => {
     socket.on('player-action', e => {
-        console.log(`Player ${e.playerName} - ${e.actionPayload}`)
+        const payload = JSON.stringify(e.actionPayload)
+        console.log(`Player ${e.playerName} - ${payload}`)
         socket.to(e.roomName).emit('player-action', e)
     })
 }

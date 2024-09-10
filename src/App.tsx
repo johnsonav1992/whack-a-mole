@@ -51,6 +51,8 @@ import {
     , useSignedInPlayers
     , useSocketAtom
 } from './state/atoms.ts';
+import { set } from 'lodash';
+import { GAME_LEVELS } from './utils/gameLevels.ts';
 
 function App () {
     const setScore = useScore( 'set' );
@@ -93,6 +95,16 @@ function App () {
 
                 if ( e.roomName === usersCurrentRoom?.name ) {
                     setGameStep( 'level' );
+                }
+            }
+            , 'player-action': e => {
+                console.log( e );
+
+                if ( 'levelSelected' in e.actionPayload ) {
+                    setGameSettings( settings => ( {
+                        ...settings
+                        , gameLevel: GAME_LEVELS[ e.actionPayload.levelSelected as keyof typeof GAME_LEVELS ]
+                    } ) );
                 }
             }
         }
