@@ -54,13 +54,13 @@ import {
 
 function App () {
     const setScore = useScore( 'set' );
-    // const [ storedSocket, setStoredSocket ] = useSocketAtom( 'norm' );
+    const [ storedSocket, setStoredSocket ] = useSocketAtom( 'norm' );
     const [ gameSettings, setGameSettings ] = useGameSettings( 'norm' );
     const [ gameStep, setGameStep ] = useGameStep( 'norm' );
     const [ rooms, setRooms ] = useRooms( 'norm' );
     const [ signedInPlayers, setSignedInPlayers ] = useSignedInPlayers( 'norm' );
 
-    const [ connectErrorShow, setConnectErrorShow ] = useState( false );
+    const [ connectErrorShow, setConnectErrorShow ] = useState( true );
 
     const currRooms = useLatest( rooms );
     const currGameSettings = useLatest( gameSettings );
@@ -98,15 +98,9 @@ function App () {
         }
     } );
 
-    useEffect( () => {
-        if ( connectError && !connectErrorShow ) {
-            setConnectErrorShow( true );
-        }
-    }, [ connectError, connectErrorShow ] );
-
-    // if ( socket && !storedSocket ) {
-    //     setStoredSocket( socket );
-    // }
+    if ( socket && !storedSocket ) {
+        setStoredSocket( socket );
+    }
 
     const {
         remainingTime
@@ -173,8 +167,12 @@ function App () {
             </Typography>
             { renderView() }
             <Snackbar
-                open={ connectErrorShow }
+                open={ !!( connectError && connectErrorShow ) }
                 autoHideDuration={ 2000 }
+                anchorOrigin={ {
+                    vertical: 'bottom'
+                    , horizontal: 'center'
+                } }
             >
                 <Alert
                     severity='error'

@@ -24,7 +24,6 @@ const UserSignin = ( {
     numPlayers
 }: Props ) => {
     const socket = useSocketAtom( 'value' );
-    console.log( socket );
     const rooms = useRooms( 'value' );
     const gameSettings = useGameSettings( 'value' );
     const setGameSettings = useGameSettings( 'set' );
