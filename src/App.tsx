@@ -51,7 +51,6 @@ import {
     , useSignedInPlayers
     , useSocketAtom
 } from './state/atoms.ts';
-import { set } from 'lodash';
 import { GAME_LEVELS } from './utils/gameLevels.ts';
 
 function App () {

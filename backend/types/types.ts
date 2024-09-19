@@ -8,3 +8,7 @@ export type GameRoom = {
     name: string;
     currentPlayers: Players;
 };
+export type GameRoomBoardData = {
+    moles: boolean[]; 
+    players: string[];
+}

@@ -5,12 +5,14 @@ import {
 import { 
     ClientToServerEvents
     , ServerToClientEvents 
-} from './types/socketEventTypes.js'
+} from './types/socketEventTypes'
 import { joinRoom, leaveRoom, levelSelectInitiated, moleWhacked, playerAction, userLeave, userSignedIn } from "./socketEventHandlers/socketEventHandlers.ts";
 import { getRoomsAndPlayers, registerHandlers } from "./utils/utils.ts";
+import { GameRoomBoardData } from "./types/types";
 
 const PORT = 8000;
 export const activeUsers = new Map<Socket['id'], string>();
+export const activeTwoPlayerGames = new Map<string, GameRoomBoardData>();
 
 const io = new Server<
     ClientToServerEvents

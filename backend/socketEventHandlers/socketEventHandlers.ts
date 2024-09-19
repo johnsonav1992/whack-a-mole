@@ -2,7 +2,8 @@
 import { WhackAMoleSocket } from "../types/types";
 
 // Utils
-import { activeUsers, io } from '../index'
+import { activeUsers, activeTwoPlayerGames, io } from '../index'
+import { createNewGame, getRoomsAndPlayers } from "../utils/utils";
 
 export const userSignedIn = (socket: WhackAMoleSocket) => {
     socket.on('player-signed-in', (e) => {
@@ -56,8 +57,24 @@ export const levelSelectInitiated = (socket: WhackAMoleSocket) => {
 
 export const playerAction = (socket: WhackAMoleSocket) => {
     socket.on('player-action', e => {
-        const payload = JSON.stringify(e.actionPayload)
-        console.log(`Player ${e.playerName} - ${payload}`)
-        socket.to(e.roomName).emit('player-action', e)
+        const playerName = e.playerName;
+        const roomName = e.roomName;
+        const payload = e.actionPayload;
+
+        const currentPopulatedRooms = getRoomsAndPlayers();
+        console.log(currentPopulatedRooms);
+
+        console.log(`Player ${playerName} - ${JSON.stringify(payload)}`);
+
+        if ('startGame' in payload) {
+            const room = currentPopulatedRooms.find(rm => rm.name === roomName);
+
+            if (room && room.currentPlayers.length === 2) {
+                createNewGame(room?.name, room.currentPlayers as string[]);
+                console.log('New Game Started - ', JSON.stringify(Array.from(activeTwoPlayerGames.entries())));
+            }
+        }
+
+        socket.to(e.roomName).emit('player-action', e);
     })
 }

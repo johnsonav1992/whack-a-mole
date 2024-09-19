@@ -29,7 +29,12 @@ const LevelSelection = () => {
     const room = rooms.find( rm => rm.currentPlayers.includes( gameSettings.userName ) );
 
     const continueToGame = () => {
-        setGameStep( 'start' );
+        socket?.emit( 'player-action', {
+            playerName: gameSettings.userName
+            , roomName: room?.name || ''
+            , actionPayload: { 'startGame': true }
+        } );
+        // setGameStep( 'start' );
     };
 
     const emitLevelChange = ( e: SyntheticEvent<Element, Event> ) => {
