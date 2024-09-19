@@ -37,3 +37,17 @@ export const createNewGame = (roomId: string, players: string[] ) => {
     const moleState = Array(16).fill(false);
     activeTwoPlayerGames.set(roomId, { moles: moleState, players });
 };
+
+export const playGame = (socket: WhackAMoleSocket) => {
+  // Periodically pop up moles
+  setInterval(() => {
+    const moleToPop = Math.floor(Math.random() * moles.length);
+    moles[moleToPop] = true;
+    io.emit('molePop', { moleIndex: moleToPop, isVisible: true });
+
+    setTimeout(() => {
+        moles[moleToPop] = false;
+        io.emit('molePop', { moleIndex: moleToPop, isVisible: false });
+    }, 1000); // Mole stays up for 1 second
+}, 2000); // Pop a mole every 2 seconds
+}
